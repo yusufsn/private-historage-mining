@@ -1,0 +1,5 @@
+-    activeMasterManager.blockUntilBecomingActiveMaster(status);
+-    activeMasterManager.blockUntilBecomingActiveMaster(status);
+-    activeMasterManager.blockUntilBecomingActiveMaster(
+-      manager.blockUntilBecomingActiveMaster(
+-

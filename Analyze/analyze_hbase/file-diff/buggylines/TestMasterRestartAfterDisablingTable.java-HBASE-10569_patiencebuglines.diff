@@ -1,0 +1,21 @@
+-import java.io.IOException;
+-import java.util.TreeSet;
+-import org.apache.hadoop.hbase.*;
+-import org.apache.hadoop.hbase.protobuf.ProtobufUtil;
+-import org.apache.hadoop.hbase.util.JVMClusterUtil.RegionServerThread;
+-    NavigableSet<String> regions = getAllOnlineRegions(cluster);
+-    regions = getAllOnlineRegions(cluster);
+-    assertEquals(
+-        "The assigned regions were not onlined after master switch except for the catalog and namespace tables.",
+-
+-  private NavigableSet<String> getAllOnlineRegions(MiniHBaseCluster cluster)
+-      throws IOException {
+-    NavigableSet<String> online = new TreeSet<String>();
+-    for (RegionServerThread rst : cluster.getLiveRegionServerThreads()) {
+-      for (HRegionInfo region : ProtobufUtil.getOnlineRegions(rst.getRegionServer())) {
+-        online.add(region.getRegionNameAsString());
+-      }
+-    }
+-    return online;
+-  }
+-

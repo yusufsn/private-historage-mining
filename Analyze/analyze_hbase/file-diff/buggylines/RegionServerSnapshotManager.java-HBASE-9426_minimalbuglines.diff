@@ -1,0 +1,27 @@
+-import org.apache.hadoop.hbase.protobuf.ProtobufUtil;
+-public class RegionServerSnapshotManager {
+-  private final RegionServerServices rss;
+-  private final ProcedureMemberRpcs memberRpcs;
+-  private final ProcedureMember member;
+-  /**
+-   * Create a default snapshot handler - uses a zookeeper based member controller.
+-   * @param rss region server running the handler
+-   * @throws KeeperException if the zookeeper cluster cannot be reached
+-   */
+-  public RegionServerSnapshotManager(RegionServerServices rss)
+-      throws KeeperException {
+-    this.rss = rss;
+-    ZooKeeperWatcher zkw = rss.getZooKeeper();
+-    this.memberRpcs = new ZKProcedureMemberRpcs(zkw,
+-        SnapshotManager.ONLINE_SNAPSHOT_CONTROLLER_DESCRIPTION);
+-
+-    // read in the snapshot request configuration properties
+-    Configuration conf = rss.getConfiguration();
+-    long keepAlive = conf.getLong(SNAPSHOT_TIMEOUT_MILLIS_KEY, SNAPSHOT_TIMEOUT_MILLIS_DEFAULT);
+-    int opThreads = conf.getInt(SNAPSHOT_REQUEST_THREADS_KEY, SNAPSHOT_REQUEST_THREADS_DEFAULT);
+-
+-    // create the actual snapshot procedure member
+-    ThreadPoolExecutor pool = ProcedureMember.defaultPool(rss.getServerName().toString(),
+-      opThreads, keepAlive);
+-    this.member = new ProcedureMember(memberRpcs, pool, new SnapshotSubprocedureBuilder());
+-  }

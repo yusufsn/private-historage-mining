@@ -1,0 +1,5 @@
+-import org.apache.hadoop.fs.FileSystem;
+-import org.apache.hadoop.hbase.regionserver.ShutdownHook;
+-        HRegionServer hrs = t.getRegionServer();
+-        ShutdownHook.install(hrs.getConfiguration(), FileSystem.get(hrs
+-                .getConfiguration()), hrs, t);

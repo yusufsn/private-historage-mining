@@ -1,0 +1,8 @@
+-      regionServer.getCoprocessorHost().loadSystemCoprocessors(conf,
+-      boolean threwIOE = false;
+-        // We may need two puts to reliably get an exception
+-        table.put(put);
+-        table.flushCommits();
+-        threwIOE = true;
+-      } finally {
+-        assertTrue("The regionserver should have thrown an exception", threwIOE);

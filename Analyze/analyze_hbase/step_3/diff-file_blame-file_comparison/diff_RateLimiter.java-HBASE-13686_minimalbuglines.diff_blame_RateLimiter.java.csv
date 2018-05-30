@@ -1,0 +1,35 @@
+line_number,buggy_code,does_bugline_from_originfile?,date_added_in_originfile
+30, *   RateLimiter limiter = new RateLimiter(); // At this point you have a unlimited resource limiter,True,2014-09-18
+33, *   long lastTs = 0;             // You need to keep track of the last update timestamp,True,2014-09-18
+35, *     long now = System.currentTimeMillis();,True,2014-09-18
+36, *,True,2014-09-18
+38," *     bool canExecute = limiter.canExecute(now, lastTs);",True,2014-09-18
+47,public class RateLimiter {,True,2014-09-18
+52,  public RateLimiter() {,True,2014-09-18
+53,  },True,2014-09-18
+62,      case NANOSECONDS:,True,2014-09-18
+63,"        throw new RuntimeException(""Unsupported NANOSECONDS TimeUnit"");",True,2014-09-18
+64,      case MICROSECONDS:,True,2014-09-18
+65,"        throw new RuntimeException(""Unsupported MICROSECONDS TimeUnit"");",True,2014-09-18
+88,"      return ""RateLimiter(Bypass)"";",True,2014-09-18
+90,"    return ""RateLimiter(avail="" + avail + "" limit="" + limit + "" tunit="" + tunit + "")"";",True,2014-09-18
+120,"   * given the time interval, is there at least one resource available to allow execution?",True,2014-09-18
+121,   * @param now the current timestamp,True,2014-09-18
+122,   * @param lastTs the timestamp of the last update,True,2014-09-18
+125,"  public boolean canExecute(final long now, final long lastTs) {",True,2014-09-18
+126,"    return canExecute(now, lastTs, 1);",True,2014-09-18
+130,"   * given the time interval, are there enough available resources to allow execution?",True,2014-09-18
+131,   * @param now the current timestamp,True,2014-09-18
+132,   * @param lastTs the timestamp of the last update,True,2014-09-18
+136,"  public synchronized boolean canExecute(final long now, final long lastTs, final long amount) {",True,2014-09-18
+137,"    return avail >= amount ? true : refill(now, lastTs) >= amount;",True,2014-09-18
+167,    return (amount <= avail) ? 0 : ((amount * tunit) / limit) - ((avail * tunit) / limit);,True,2014-09-18
+170,  /**,True,2014-09-18
+171,"   * given the specified time interval, refill the avilable units to the proportionate",True,2014-09-18
+172,   * to elapsed time or to the prespecified limit.,True,2014-09-18
+173,   */,True,2014-09-18
+174,"  private long refill(final long now, final long lastTs) {",True,2014-09-18
+175,    long delta = (limit * (now - lastTs)) / tunit;,True,2014-09-18
+176,    if (delta > 0) {,True,2014-09-18
+177,"      avail = Math.min(limit, avail + delta);",True,2014-09-18
+179,    return avail;,True,2014-09-18

@@ -1,0 +1,17 @@
+,filename,#line_changed-hist,#line_changed-myers,#line_changed-min,#line_changed-pat
+0,.../org/apache/hadoop/hbase/util/HBaseFsck.java,1808,1806,1806,1806
+1,.../apache/hadoop/hbase/io/hfile/HFileBlock.java,1036,1032,1032,1040
+2,.../hadoop/hbase/client/HConnectionManager.java,794,772,772,774
+6,.../apache/hadoop/hbase/util/TestHBaseFsck.java,576,572,572,572
+8,.../hbase/regionserver/DataBlockEncodingTool.java,430,434,434,432
+11,.../apache/hadoop/hbase/regionserver/HRegion.java,378,374,374,382
+16,.../org/apache/hadoop/hbase/io/hfile/HFile.java,274,270,270,274
+28,.../hadoop/hbase/regionserver/StoreFile.java,195,189,189,191
+29,.../apache/hadoop/hbase/HBaseTestingUtility.java,193,189,189,189
+40,.../hadoop/hbase/io/hfile/TestHFileBlock.java,161,163,163,161
+41,.../apache/hadoop/hbase/util/HBaseFsckRepair.java,160,154,154,156
+55,.../hadoop/hbase/thrift/ThriftServerRunner.java,120,122,122,120
+64,.../java/org/apache/hadoop/hbase/util/FSUtils.java,102,104,104,102
+87,.../hadoop/hbase/io/encoding/DataBlockEncoder.java,73,69,69,69
+137,bin/hbase,31,33,33,33
+147,src/packages/rpm/spec/hbase.spec,26,28,28,26

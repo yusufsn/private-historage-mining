@@ -1,0 +1,116 @@
+commit_id,committer,date,time,line_number,code
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,1,/**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,2, * Licensed to the Apache Software Foundation (ASF) under one
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,3, * or more contributor license agreements.  See the NOTICE file
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,4, * distributed with this work for additional information
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,5, * regarding copyright ownership.  The ASF licenses this file
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,6," * to you under the Apache License, Version 2.0 (the"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,7," * ""License""); you may not use this file except in compliance"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,8, * with the License.  You may obtain a copy of the License at
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,9, *
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,10, *     http://www.apache.org/licenses/LICENSE-2.0
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,11, *
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,12," * Unless required by applicable law or agreed to in writing, software"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,13," * distributed under the License is distributed on an ""AS IS"" BASIS,"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,14," * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,15, * See the License for the specific language governing permissions and
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,16, * limitations under the License.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,17, */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,18,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,19,package org.apache.hadoop.hbase.quotas;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,20,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,21,import java.util.concurrent.TimeUnit;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,22,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,23,import org.apache.hadoop.hbase.testclassification.SmallTests;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,24,import org.apache.hadoop.hbase.testclassification.RegionServerTests;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,25,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,26,import org.junit.Assert;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,27,import org.junit.Test;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,28,import org.junit.experimental.categories.Category;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,29,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,30,import static org.junit.Assert.assertEquals;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,31,import static org.junit.Assert.assertFalse;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,32,import static org.junit.Assert.assertTrue;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,33,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,34,/**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,35, * Verify the behaviour of the Rate Limiter.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,36, */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,37,"@Category({RegionServerTests.class, SmallTests.class})"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,38,public class TestRateLimiter {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,39,  @Test
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,40,  public void testWaitIntervalTimeUnitSeconds() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,41,"    testWaitInterval(TimeUnit.SECONDS, 10, 100);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,42,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,43,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,44,  @Test
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,45,  public void testWaitIntervalTimeUnitMinutes() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,46,"    testWaitInterval(TimeUnit.MINUTES, 10, 6000);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,47,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,48,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,49,  @Test
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,50,  public void testWaitIntervalTimeUnitHours() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,51,"    testWaitInterval(TimeUnit.HOURS, 10, 360000);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,52,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,53,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,54,  @Test
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,55,  public void testWaitIntervalTimeUnitDays() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,56,"    testWaitInterval(TimeUnit.DAYS, 10, 8640000);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,57,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,58,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,59,"  private void testWaitInterval(final TimeUnit timeUnit, final long limit,"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,60,      final long expectedWaitInterval) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,61,    RateLimiter limiter = new RateLimiter();
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,62,"    limiter.set(limit, timeUnit);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,63,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,64,    long nowTs = 0;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,65,    long lastTs = 0;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,66,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,67,"    // consume all the available resources, one request at the time."
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,68,    // the wait interval should be 0
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,69,    for (int i = 0; i < (limit - 1); ++i) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,70,"      assertTrue(limiter.canExecute(nowTs, lastTs));"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,71,      limiter.consume();
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,72,      long waitInterval = limiter.waitInterval();
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,73,"      assertEquals(0, waitInterval);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,74,    }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,75,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,76,    for (int i = 0; i < (limit * 4); ++i) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,77,"      // There is one resource available, so we should be able to"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,78,      // consume it without waiting.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,79,"      assertTrue(limiter.canExecute(nowTs, lastTs));"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,80,"      assertEquals(0, limiter.waitInterval());"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,81,      limiter.consume();
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,82,      lastTs = nowTs;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,83,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,84,"      // No more resources are available, we should wait for at least an interval."
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,85,      long waitInterval = limiter.waitInterval();
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,86,"      assertEquals(expectedWaitInterval, waitInterval);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,87,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,88,      // set the nowTs to be the exact time when resources should be available again.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,89,      nowTs += waitInterval;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,90,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,91,      // artificially go into the past to prove that when too early we should fail.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,92,"      assertFalse(limiter.canExecute(nowTs - 500, lastTs));"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,93,    }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,94,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,95,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,96,  @Test
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,97,  public void testOverconsumption() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,98,    RateLimiter limiter = new RateLimiter();
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,99,"    limiter.set(10, TimeUnit.SECONDS);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,100,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,101,"    // 10 resources are available, but we need to consume 20 resources"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,102,    // Verify that we have to wait at least 1.1sec to have 1 resource available
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,103,"    assertTrue(limiter.canExecute(0, 0));"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,104,    limiter.consume(20);
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,105,"    assertEquals(1100, limiter.waitInterval());"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,106,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,107,    // Verify that after 1sec we need to wait for another 0.1sec to get a resource available
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,108,"    assertFalse(limiter.canExecute(1000, 0));"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,109,"    assertEquals(100, limiter.waitInterval());"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,110,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,111,    // Verify that after 1.1sec the resource is available
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,112,"    assertTrue(limiter.canExecute(1100, 0));"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,113,"    assertEquals(0, limiter.waitInterval());"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,114,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,115,}

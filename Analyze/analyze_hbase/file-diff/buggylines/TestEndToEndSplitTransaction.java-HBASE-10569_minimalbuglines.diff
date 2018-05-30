@@ -1,0 +1,2 @@
+-      server.get(null, request);
+-        server.scan(new PayloadCarryingRpcController(), scanRequest);

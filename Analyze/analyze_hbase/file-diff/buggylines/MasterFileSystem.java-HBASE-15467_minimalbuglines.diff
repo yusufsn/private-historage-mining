@@ -1,0 +1,3 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-    fsd.createTableDescriptor(
+-        new TableDescriptor(fsd.get(TableName.META_TABLE_NAME)));

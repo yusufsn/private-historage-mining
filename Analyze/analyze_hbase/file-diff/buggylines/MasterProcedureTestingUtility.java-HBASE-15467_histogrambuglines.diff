@@ -1,0 +1,11 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-    TableDescriptor tableDesc = master.getTableDescriptors().getDescriptor(tableName);
+-    assertTrue("table descriptor not found", tableDesc != null);
+-    HTableDescriptor htd = tableDesc.getHTableDescriptor();
+-      master.getTableDescriptors().getDescriptor(tableName) == null);
+-    TableDescriptor htd = master.getTableDescriptors().getDescriptor(tableName);
+-    assertTrue(htd.getHTableDescriptor().hasFamily(family.getBytes()));
+-    TableDescriptor htd = master.getTableDescriptors().getDescriptor(tableName);
+-    assertFalse(htd.getHTableDescriptor().hasFamily(family.getBytes()));
+-    TableDescriptor htd = master.getTableDescriptors().getDescriptor(tableName);
+-    HColumnDescriptor hcfd = htd.getHTableDescriptor().getFamily(family.getBytes());

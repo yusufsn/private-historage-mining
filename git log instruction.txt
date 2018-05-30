@@ -1,0 +1,9 @@
+naist-wavenet127-153:reddit YusufNugroho$ cd reddit/
+naist-wavenet127-153:reddit YusufNugroho$ git log
+naist-wavenet127-153:reddit YusufNugroho$ git log e4bd50addbb9223cd56e4f2fe141d2674df11fca
+naist-wavenet127-153:reddit YusufNugroho$ git log --date=short
+naist-wavenet127-153:reddit YusufNugroho$ git log --date=short --until=2016-02-01
+naist-wavenet127-153:reddit YusufNugroho$ git log --date=short --since=2016-01-01 --until=2016-02-01
+
+naist-wavenet127-153:tool YusufNugroho$ cd ../../tool/
+naist-wavenet127-153:tool YusufNugroho$ ./GetMetrics.sh 2

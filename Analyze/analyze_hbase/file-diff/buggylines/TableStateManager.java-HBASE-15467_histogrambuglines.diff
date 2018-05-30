@@ -1,0 +1,3 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-    final Map<String, TableDescriptor> allDescriptors =
+-    for (Map.Entry<String, TableDescriptor> entry : allDescriptors.entrySet()) {

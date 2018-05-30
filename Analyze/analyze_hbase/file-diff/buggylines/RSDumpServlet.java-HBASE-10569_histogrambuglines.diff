@@ -1,0 +1,12 @@
+-    Configuration hrsconf = (Configuration)getServletContext().getAttribute(
+-        HRegionServer.REGIONSERVER_CONF);
+-    assert hrsconf != null : "No RS conf in context";
+-
+-    out.println("Master status for " + hrs.getServerName()
+-    if(isShowQueueDump(hrsconf)) {
+-  private boolean isShowQueueDump(Configuration conf){
+-    return conf.getBoolean("hbase.regionserver.servlet.show.queuedump", true);
+-  }
+-    
+-  private void dumpQueue(HRegionServer hrs, PrintWriter out)
+-  

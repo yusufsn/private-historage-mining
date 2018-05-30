@@ -1,0 +1,2 @@
+-    TableDescriptor td = FSTableDescriptors.getTableDescriptorFromFs(mfs.getFileSystem(), tableDir);
+-    hcds = td.getHTableDescriptor().getColumnFamilies();

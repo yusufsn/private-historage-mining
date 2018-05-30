@@ -1,0 +1,158 @@
+line_no,diffmyers-TestRateLimiter.java,diffhistogram-TestRateLimiter.java,diffminimal-TestRateLimiter.java,diffpatience-TestRateLimiter.java
+9 , +import static org.junit.assert.assertequals; , -import java.util.concurrent.timeunit; , +import static org.junit.assert.assertequals; , +import static org.junit.assert.assertequals;
+10 , +import static org.junit.assert.assertfalse; , - , +import static org.junit.assert.assertfalse; , +import static org.junit.assert.assertfalse;
+11 , +import static org.junit.assert.asserttrue; , -import org.apache.hadoop.hbase.testclassification.smalltests; , +import static org.junit.assert.asserttrue; , +import static org.junit.assert.asserttrue;
+12 , + , -import org.apache.hadoop.hbase.testclassification.regionservertests; , + , +
+13 , import java.util.concurrent.timeunit; , - , import java.util.concurrent.timeunit; , import java.util.concurrent.timeunit;
+14 ,  , -import org.junit.assert; ,  , 
+15 , -import org.apache.hadoop.hbase.testclassification.smalltests; , -import org.junit.test; , -import org.apache.hadoop.hbase.testclassification.smalltests; , -import org.apache.hadoop.hbase.testclassification.smalltests;
+16 , import org.apache.hadoop.hbase.testclassification.regionservertests; , -import org.junit.experimental.categories.category; , import org.apache.hadoop.hbase.testclassification.regionservertests; , import org.apache.hadoop.hbase.testclassification.regionservertests;
+18 , -import org.junit.assert; , import static org.junit.assert.assertequals; , -import org.junit.assert; , -import org.junit.assert;
+19 , +import org.apache.hadoop.hbase.testclassification.smalltests; , import static org.junit.assert.assertfalse; , +import org.apache.hadoop.hbase.testclassification.smalltests; , +import org.apache.hadoop.hbase.testclassification.smalltests;
+20 , import org.junit.test; , import static org.junit.assert.asserttrue; , import org.junit.test; , import org.junit.test;
+21 , import org.junit.experimental.categories.category; ,  , import org.junit.experimental.categories.category; , import org.junit.experimental.categories.category;
+22 ,  , +import java.util.concurrent.timeunit; ,  , 
+23 , -import static org.junit.assert.assertequals; , + , -import static org.junit.assert.assertequals; , -import static org.junit.assert.assertequals;
+24 , -import static org.junit.assert.assertfalse; , +import org.apache.hadoop.hbase.testclassification.regionservertests; , -import static org.junit.assert.assertfalse; , -import static org.junit.assert.assertfalse;
+25 , -import static org.junit.assert.asserttrue; , +import org.apache.hadoop.hbase.testclassification.smalltests; , -import static org.junit.assert.asserttrue; , -import static org.junit.assert.asserttrue;
+26 , - , +import org.junit.test; , - , -
+27 , /** , +import org.junit.experimental.categories.category; , /** , /**
+28 , * verify the behaviour of the rate limiter. , + , * verify the behaviour of the rate limiter. , * verify the behaviour of the rate limiter.
+29 , */ , /** , */ , */
+30 ," @@ -58', '16 +56', '14 @@ public class testratelimiter { ", * verify the behaviour of the rate limiter. ," @@ -58', '16 +56', '14 @@ public class testratelimiter { "," @@ -58', '16 +56', '14 @@ public class testratelimiter {"
+31 ,  , */ ,  , 
+32 ," private void testwaitinterval(final timeunit timeunit', 'final long limit "," @@ -58', '16 +56', '14 @@ public class testratelimiter { "," private void testwaitinterval(final timeunit timeunit', 'final long limit "," private void testwaitinterval(final timeunit timeunit', 'final long limit"
+33 , final long expectedwaitinterval) { ,  , final long expectedwaitinterval) { , final long expectedwaitinterval) {
+34 , -    ratelimiter limiter = new ratelimiter(); ," private void testwaitinterval(final timeunit timeunit', 'final long limit ", -    ratelimiter limiter = new ratelimiter(); , -    ratelimiter limiter = new ratelimiter();
+35 , +    ratelimiter limiter = new averageintervalratelimiter(); , final long expectedwaitinterval) { , +    ratelimiter limiter = new averageintervalratelimiter(); , +    ratelimiter limiter = new averageintervalratelimiter();
+36 ," limiter.set(limit', 'timeunit); ", -    ratelimiter limiter = new ratelimiter(); ," limiter.set(limit', 'timeunit); "," limiter.set(limit', 'timeunit);"
+37 ,  , +    ratelimiter limiter = new averageintervalratelimiter(); ,  , 
+38 , long nowts = 0; ," limiter.set(limit', 'timeunit); ", long nowts = 0; , long nowts = 0;
+39 , -    long lastts = 0; ,  , -    long lastts = 0; , -    long lastts = 0;
+40 , - , long nowts = 0; , - , -
+41 ," // consume all the available resources', 'one request at the time. ", -    long lastts = 0; ," // consume all the available resources', 'one request at the time. "," // consume all the available resources', 'one request at the time."
+42 , // the wait interval should be 0 , - , // the wait interval should be 0 , // the wait interval should be 0
+43 , for (int i = 0; i < (limit - 1); ++i) { ," // consume all the available resources', 'one request at the time. ", for (int i = 0; i < (limit - 1); ++i) { , for (int i = 0; i < (limit - 1); ++i) {
+44 ," -      asserttrue(limiter.canexecute(nowts', 'lastts)); ", // the wait interval should be 0 ," -      asserttrue(limiter.canexecute(nowts', 'lastts)); "," -      asserttrue(limiter.canexecute(nowts', 'lastts));"
+45 , +      asserttrue(limiter.canexecute()); , for (int i = 0; i < (limit - 1); ++i) { , +      asserttrue(limiter.canexecute()); , +      asserttrue(limiter.canexecute());
+46 , limiter.consume(); ," -      asserttrue(limiter.canexecute(nowts', 'lastts)); ", limiter.consume(); , limiter.consume();
+47 , long waitinterval = limiter.waitinterval(); , +      asserttrue(limiter.canexecute()); , long waitinterval = limiter.waitinterval(); , long waitinterval = limiter.waitinterval();
+48 ," assertequals(0', 'waitinterval); ", limiter.consume(); ," assertequals(0', 'waitinterval); "," assertequals(0', 'waitinterval);"
+49 ," @@ -76', '40 +72', '102 @@ public class testratelimiter { ", long waitinterval = limiter.waitinterval(); ," @@ -76', '40 +72', '102 @@ public class testratelimiter { "," @@ -76', '40 +72', '102 @@ public class testratelimiter {"
+50 , for (int i = 0; i < (limit * 4); ++i) { ," assertequals(0', 'waitinterval); ", for (int i = 0; i < (limit * 4); ++i) { , for (int i = 0; i < (limit * 4); ++i) {
+51 ," // there is one resource available', 'so we should be able to "," @@ -76', '40 +72', '102 @@ public class testratelimiter { "," // there is one resource available', 'so we should be able to "," // there is one resource available', 'so we should be able to"
+52 , // consume it without waiting. , for (int i = 0; i < (limit * 4); ++i) { , // consume it without waiting. , // consume it without waiting.
+53 ," -      asserttrue(limiter.canexecute(nowts', 'lastts)); "," // there is one resource available', 'so we should be able to "," -      asserttrue(limiter.canexecute(nowts', 'lastts)); "," -      asserttrue(limiter.canexecute(nowts', 'lastts));"
+54 , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - nowts); , // consume it without waiting. , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - nowts); , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - nowts);
+55 , +      asserttrue(limiter.canexecute()); ," -      asserttrue(limiter.canexecute(nowts', 'lastts)); ", +      asserttrue(limiter.canexecute()); , +      asserttrue(limiter.canexecute());
+56 ," assertequals(0', 'limiter.waitinterval()); ", +      limiter.setnextrefilltime(limiter.getnextrefilltime() - nowts); ," assertequals(0', 'limiter.waitinterval()); "," assertequals(0', 'limiter.waitinterval());"
+57 , limiter.consume(); , +      asserttrue(limiter.canexecute()); , limiter.consume(); , limiter.consume();
+58 , -      lastts = nowts; ," assertequals(0', 'limiter.waitinterval()); ", -      lastts = nowts; , -      lastts = nowts;
+59 , - , limiter.consume(); , - , -
+60 ," // no more resources are available', 'we should wait for at least an interval. ", -      lastts = nowts; ," // no more resources are available', 'we should wait for at least an interval. "," // no more resources are available', 'we should wait for at least an interval."
+61 , long waitinterval = limiter.waitinterval(); , - , long waitinterval = limiter.waitinterval(); , long waitinterval = limiter.waitinterval();
+62 ," assertequals(expectedwaitinterval', 'waitinterval); "," // no more resources are available', 'we should wait for at least an interval. "," assertequals(expectedwaitinterval', 'waitinterval); "," assertequals(expectedwaitinterval', 'waitinterval);"
+63 ,  , long waitinterval = limiter.waitinterval(); ,  , 
+64 , // set the nowts to be the exact time when resources should be available again. ," assertequals(expectedwaitinterval', 'waitinterval); ", // set the nowts to be the exact time when resources should be available again. , // set the nowts to be the exact time when resources should be available again.
+65 , -      nowts += waitinterval; ,  , -      nowts += waitinterval; , -      nowts += waitinterval;
+66 , +      nowts = waitinterval; , // set the nowts to be the exact time when resources should be available again. , +      nowts = waitinterval; , +      nowts = waitinterval;
+67 ,  , -      nowts += waitinterval; ,  , 
+68 , // artificially go into the past to prove that when too early we should fail. , +      nowts = waitinterval; , // artificially go into the past to prove that when too early we should fail. , // artificially go into the past to prove that when too early we should fail.
+69 ," -      assertfalse(limiter.canexecute(nowts - 500', 'lastts)); ",  ," -      assertfalse(limiter.canexecute(nowts - 500', 'lastts)); "," -      assertfalse(limiter.canexecute(nowts - 500', 'lastts));"
+70 , +      long temp = nowts + 500; , // artificially go into the past to prove that when too early we should fail. , +      long temp = nowts + 500; , +      long temp = nowts + 500;
+71 , +      limiter.setnextrefilltime(limiter.getnextrefilltime() + temp); ," -      assertfalse(limiter.canexecute(nowts - 500', 'lastts)); ", +      limiter.setnextrefilltime(limiter.getnextrefilltime() + temp); , +      limiter.setnextrefilltime(limiter.getnextrefilltime() + temp);
+72 , +      assertfalse(limiter.canexecute()); , +      long temp = nowts + 500; , +      assertfalse(limiter.canexecute()); , +      assertfalse(limiter.canexecute());
+73 , +      //roll back the nextrefilltime set to continue further testing , +      limiter.setnextrefilltime(limiter.getnextrefilltime() + temp); , +      //roll back the nextrefilltime set to continue further testing , +      //roll back the nextrefilltime set to continue further testing
+74 , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - temp); , +      assertfalse(limiter.canexecute()); , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - temp); , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - temp);
+75 , } , +      //roll back the nextrefilltime set to continue further testing , } , }
+76 , } , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - temp); , } , }
+77 ,  , } ,  , 
+78 , @test , } , @test , @test
+79 , -  public void testoverconsumption() { ,  , -  public void testoverconsumption() { , -  public void testoverconsumption() {
+80 , -    ratelimiter limiter = new ratelimiter(); , @test , -    ratelimiter limiter = new ratelimiter(); , -    ratelimiter limiter = new ratelimiter();
+81 , +  public void testoverconsumptionaverageintervalrefillstrategy() { , -  public void testoverconsumption() { , +  public void testoverconsumptionaverageintervalrefillstrategy() { , +  public void testoverconsumptionaverageintervalrefillstrategy() {
+82 , +    ratelimiter limiter = new averageintervalratelimiter(); , -    ratelimiter limiter = new ratelimiter(); , +    ratelimiter limiter = new averageintervalratelimiter(); , +    ratelimiter limiter = new averageintervalratelimiter();
+83 ," limiter.set(10', 'timeunit.seconds); ", +  public void testoverconsumptionaverageintervalrefillstrategy() { ," limiter.set(10', 'timeunit.seconds); "," limiter.set(10', 'timeunit.seconds);"
+84 ,  , +    ratelimiter limiter = new averageintervalratelimiter(); ,  , 
+85 ," // 10 resources are available', 'but we need to consume 20 resources "," limiter.set(10', 'timeunit.seconds); "," // 10 resources are available', 'but we need to consume 20 resources "," // 10 resources are available', 'but we need to consume 20 resources"
+86 , // verify that we have to wait at least 1.1sec to have 1 resource available ,  , // verify that we have to wait at least 1.1sec to have 1 resource available , // verify that we have to wait at least 1.1sec to have 1 resource available
+87 ," -    asserttrue(limiter.canexecute(0', '0)); "," // 10 resources are available', 'but we need to consume 20 resources "," -    asserttrue(limiter.canexecute(0', '0)); "," -    asserttrue(limiter.canexecute(0', '0));"
+88 , +    asserttrue(limiter.canexecute()); , // verify that we have to wait at least 1.1sec to have 1 resource available , +    asserttrue(limiter.canexecute()); , +    asserttrue(limiter.canexecute());
+89 , limiter.consume(20); ," -    asserttrue(limiter.canexecute(0', '0)); ", limiter.consume(20); , limiter.consume(20);
+90 ," -    assertequals(1100', 'limiter.waitinterval()); ", +    asserttrue(limiter.canexecute()); ," -    assertequals(1100', 'limiter.waitinterval()); "," -    assertequals(1100', 'limiter.waitinterval());"
+91 , +    // to consume 1 resource wait for 100ms , limiter.consume(20); , +    // to consume 1 resource wait for 100ms , +    // to consume 1 resource wait for 100ms
+92 ," +    assertequals(100', 'limiter.waitinterval(1)); "," -    assertequals(1100', 'limiter.waitinterval()); "," +    assertequals(100', 'limiter.waitinterval(1)); "," +    assertequals(100', 'limiter.waitinterval(1));"
+93 , +    // to consume 10 resource wait for 1000ms , +    // to consume 1 resource wait for 100ms , +    // to consume 10 resource wait for 1000ms , +    // to consume 10 resource wait for 1000ms
+94 ," +    assertequals(1000', 'limiter.waitinterval(10)); "," +    assertequals(100', 'limiter.waitinterval(1)); "," +    assertequals(1000', 'limiter.waitinterval(10)); "," +    assertequals(1000', 'limiter.waitinterval(10));"
+95 , + , +    // to consume 10 resource wait for 1000ms , + , 
+96 , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 900); ," +    assertequals(1000', 'limiter.waitinterval(10)); ", +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 900); , -    // verify that after 1sec we need to wait for another 0.1sec to get a resource available
+97 , +    // verify that after 1sec the 1 resource is available ,  , +    // verify that after 1sec the 1 resource is available ," -    assertfalse(limiter.canexecute(1000', '0));"
+98 , +    asserttrue(limiter.canexecute(1)); , -    // verify that after 1sec we need to wait for another 0.1sec to get a resource available , +    asserttrue(limiter.canexecute(1)); ," -    assertequals(100', 'limiter.waitinterval());"
+99 , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 100); ," -    assertfalse(limiter.canexecute(1000', '0)); ", +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 100); , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 900);
+100 , +    // verify that after 1sec the 10 resource is available ," -    assertequals(100', 'limiter.waitinterval()); ", +    // verify that after 1sec the 10 resource is available , +    // verify that after 1sec the 1 resource is available
+101 , +    asserttrue(limiter.canexecute()); , - , +    asserttrue(limiter.canexecute()); , +    asserttrue(limiter.canexecute(1));
+102 ," +    assertequals(0', 'limiter.waitinterval()); ", -    // verify that after 1.1sec the resource is available ," +    assertequals(0', 'limiter.waitinterval()); ", +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 100);
+103 , +  } ," -    asserttrue(limiter.canexecute(1100', '0)); ", +  } , +    // verify that after 1sec the 10 resource is available
+104 ,  , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 900); ,  , +    asserttrue(limiter.canexecute());
+105 , -    // verify that after 1sec we need to wait for another 0.1sec to get a resource available , +    // verify that after 1sec the 1 resource is available , -    // verify that after 1sec we need to wait for another 0.1sec to get a resource available ," +    assertequals(0', 'limiter.waitinterval());"
+106 ," -    assertfalse(limiter.canexecute(1000', '0)); ", +    asserttrue(limiter.canexecute(1)); ," -    assertfalse(limiter.canexecute(1000', '0)); ", +  }
+107 ," -    assertequals(100', 'limiter.waitinterval()); ", +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 100); ," -    assertequals(100', 'limiter.waitinterval()); ", +
+108 , +  @test , +    // verify that after 1sec the 10 resource is available , +  @test , +  @test
+109 , +  public void testoverconsumptionfixedintervalrefillstrategy() throws interruptedexception { , +    asserttrue(limiter.canexecute()); , +  public void testoverconsumptionfixedintervalrefillstrategy() throws interruptedexception { , +  public void testoverconsumptionfixedintervalrefillstrategy() throws interruptedexception {
+110 , +    ratelimiter limiter = new fixedintervalratelimiter(); ," assertequals(0', 'limiter.waitinterval()); ", +    ratelimiter limiter = new fixedintervalratelimiter(); , +    ratelimiter limiter = new fixedintervalratelimiter();
+111 ," +    limiter.set(10', 'timeunit.seconds); ", } ," +    limiter.set(10', 'timeunit.seconds); "," +    limiter.set(10', 'timeunit.seconds);"
+112 ,  , + ,  , 
+113 , -    // verify that after 1.1sec the resource is available , +  @test , -    // verify that after 1.1sec the resource is available , -    // verify that after 1.1sec the resource is available
+114 ," -    asserttrue(limiter.canexecute(1100', '0)); ", +  public void testoverconsumptionfixedintervalrefillstrategy() throws interruptedexception { ," -    asserttrue(limiter.canexecute(1100', '0)); "," -    asserttrue(limiter.canexecute(1100', '0));"
+115 ," +    // 10 resources are available', 'but we need to consume 20 resources ", +    ratelimiter limiter = new fixedintervalratelimiter(); ," +    // 10 resources are available', 'but we need to consume 20 resources "," +    // 10 resources are available', 'but we need to consume 20 resources"
+116 , +    // verify that we have to wait at least 1.1sec to have 1 resource available ," +    limiter.set(10', 'timeunit.seconds); ", +    // verify that we have to wait at least 1.1sec to have 1 resource available , +    // verify that we have to wait at least 1.1sec to have 1 resource available
+117 , +    asserttrue(limiter.canexecute()); , + , +    asserttrue(limiter.canexecute()); , +    asserttrue(limiter.canexecute());
+118 , +    limiter.consume(20); ," +    // 10 resources are available', 'but we need to consume 20 resources ", +    limiter.consume(20); , +    limiter.consume(20);
+119 , +    // to consume 1 resource also wait for 1000ms , +    // verify that we have to wait at least 1.1sec to have 1 resource available , +    // to consume 1 resource also wait for 1000ms , +    // to consume 1 resource also wait for 1000ms
+120 ," +    assertequals(1000', 'limiter.waitinterval(1)); ", +    asserttrue(limiter.canexecute()); ," +    assertequals(1000', 'limiter.waitinterval(1)); "," +    assertequals(1000', 'limiter.waitinterval(1));"
+121 , +    // to consume 10 resource wait for 100ms , +    limiter.consume(20); , +    // to consume 10 resource wait for 100ms , +    // to consume 10 resource wait for 100ms
+122 ," +    assertequals(1000', 'limiter.waitinterval(10)); ", +    // to consume 1 resource also wait for 1000ms ," +    assertequals(1000', 'limiter.waitinterval(10)); "," +    assertequals(1000', 'limiter.waitinterval(10));"
+123 , + ," +    assertequals(1000', 'limiter.waitinterval(1)); ", + , +
+124 , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 900); , +    // to consume 10 resource wait for 100ms , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 900); , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 900);
+125 , +    // verify that after 1sec also no resource should be available ," +    assertequals(1000', 'limiter.waitinterval(10)); ", +    // verify that after 1sec also no resource should be available , +    // verify that after 1sec also no resource should be available
+126 , +    assertfalse(limiter.canexecute(1)); , + , +    assertfalse(limiter.canexecute(1)); , +    assertfalse(limiter.canexecute(1));
+127 , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 100); , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 900); , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 100); , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 100);
+128 , + , +    // verify that after 1sec also no resource should be available , + , +
+129 , +    // verify that after 1sec the 10 resource is available , +    assertfalse(limiter.canexecute(1)); , +    // verify that after 1sec the 10 resource is available , +    // verify that after 1sec the 10 resource is available
+130 , +    asserttrue(limiter.canexecute()); , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 100); , +    asserttrue(limiter.canexecute()); , +    asserttrue(limiter.canexecute());
+131 ," assertequals(0', 'limiter.waitinterval()); ", + ," assertequals(0', 'limiter.waitinterval()); "," assertequals(0', 'limiter.waitinterval());"
+132 , } , +    // verify that after 1sec the 10 resource is available , } , }
+133 , + , +    asserttrue(limiter.canexecute()); , + , +
+134 , +  @test ," +    assertequals(0', 'limiter.waitinterval()); ", +  @test , +  @test
+135 , +  public void testfixedintervalresourceavailability() throws exception { , +  } , +  public void testfixedintervalresourceavailability() throws exception { , +  public void testfixedintervalresourceavailability() throws exception {
+136 , +    ratelimiter limiter = new fixedintervalratelimiter(); , + , +    ratelimiter limiter = new fixedintervalratelimiter(); , +    ratelimiter limiter = new fixedintervalratelimiter();
+137 ," +    limiter.set(10', 'timeunit.milliseconds); ", +  @test ," +    limiter.set(10', 'timeunit.milliseconds); "," +    limiter.set(10', 'timeunit.milliseconds);"
+138 , + , +  public void testfixedintervalresourceavailability() throws exception { , + , +
+139 , +    asserttrue(limiter.canexecute(10)); , +    ratelimiter limiter = new fixedintervalratelimiter(); , +    asserttrue(limiter.canexecute(10)); , +    asserttrue(limiter.canexecute(10));
+140 , +    limiter.consume(3); ," +    limiter.set(10', 'timeunit.milliseconds); ", +    limiter.consume(3); , +    limiter.consume(3);
+141 ," +    assertequals(7', 'limiter.getavailable()); ", + ," +    assertequals(7', 'limiter.getavailable()); "," +    assertequals(7', 'limiter.getavailable());"
+142 , +    assertfalse(limiter.canexecute(10)); , +    asserttrue(limiter.canexecute(10)); , +    assertfalse(limiter.canexecute(10)); , +    assertfalse(limiter.canexecute(10));
+143 , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 3); , +    limiter.consume(3); , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 3); , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 3);
+144 , +    asserttrue(limiter.canexecute(10)); ," +    assertequals(7', 'limiter.getavailable()); ", +    asserttrue(limiter.canexecute(10)); , +    asserttrue(limiter.canexecute(10));
+145 ," +    assertequals(10', 'limiter.getavailable()); ", +    assertfalse(limiter.canexecute(10)); ," +    assertequals(10', 'limiter.getavailable()); "," +    assertequals(10', 'limiter.getavailable());"
+146 , +  } , +    limiter.setnextrefilltime(limiter.getnextrefilltime() - 3); , +  } , +  }
+147 , + , +    asserttrue(limiter.canexecute(10)); , + , +
+148 , +  @test ," +    assertequals(10', 'limiter.getavailable()); ", +  @test , +  @test
+149 , +  public void testlimiterbysmallerrate() throws interruptedexception { , +  } , +  public void testlimiterbysmallerrate() throws interruptedexception { , +  public void testlimiterbysmallerrate() throws interruptedexception {
+150 , +    // set limiter is 10 resources per seconds , + , +    // set limiter is 10 resources per seconds , +    // set limiter is 10 resources per seconds
+151 , +    ratelimiter limiter = new fixedintervalratelimiter(); , +  @test , +    ratelimiter limiter = new fixedintervalratelimiter(); , +    ratelimiter limiter = new fixedintervalratelimiter();
+152 ," +    limiter.set(10', 'timeunit.seconds); ", +  public void testlimiterbysmallerrate() throws interruptedexception { ," +    limiter.set(10', 'timeunit.seconds); "," +    limiter.set(10', 'timeunit.seconds);"
+153 , + , +    // set limiter is 10 resources per seconds , + , +
+154 , +    int count = 0; // control the test count , +    ratelimiter limiter = new fixedintervalratelimiter(); , +    int count = 0; // control the test count , +    int count = 0; // control the test count
+155 , +    while ((count++) < 10) { ," +    limiter.set(10', 'timeunit.seconds); ", +    while ((count++) < 10) { , +    while ((count++) < 10) {
+156 , +      // test will get 3 resources per 0.5 sec. so it will get 6 resources per sec. , + , +      // test will get 3 resources per 0.5 sec. so it will get 6 resources per sec. , +      // test will get 3 resources per 0.5 sec. so it will get 6 resources per sec.
+157 , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - 500); , +    int count = 0; // control the test count , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - 500); , +      limiter.setnextrefilltime(limiter.getnextrefilltime() - 500);
+158 , +      for (int i = 0; i < 3; i++) { , +    while ((count++) < 10) { , +      for (int i = 0; i < 3; i++) { , +      for (int i = 0; i < 3; i++) {
+159 ," +        // 6 resources/sec < limit', 'so limiter.canexecute(nowts', 'lastts) should be true ", +      // test will get 3 resources per 0.5 sec. so it will get 6 resources per sec. ," +        // 6 resources/sec < limit', 'so limiter.canexecute(nowts', 'lastts) should be true "," +        // 6 resources/sec < limit', 'so limiter.canexecute(nowts', 'lastts) should be true"
+160 ," +        assertequals(true', 'limiter.canexecute()); ", +      limiter.setnextrefilltime(limiter.getnextrefilltime() - 500); ," +        assertequals(true', 'limiter.canexecute()); "," +        assertequals(true', 'limiter.canexecute());"
+161 , +        limiter.consume(); , +      for (int i = 0; i < 3; i++) { , +        limiter.consume(); , +        limiter.consume();
+162 , +      } ," +        // 6 resources/sec < limit', 'so limiter.canexecute(nowts', 'lastts) should be true ", +      } , +      }
+163 , +    } ," +        assertequals(true', 'limiter.canexecute()); ", +    } , +    }
+164 , +  } , +        limiter.consume(); , +  } , +  }
+165 , } , +      } , } , }
+166 , \\ no newline at end of file , +    } , \\ no newline at end of file , \\ no newline at end of file

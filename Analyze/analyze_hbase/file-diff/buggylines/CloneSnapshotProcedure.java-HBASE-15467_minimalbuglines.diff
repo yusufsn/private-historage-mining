@@ -1,0 +1,2 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-    TableDescriptor underConstruction = new TableDescriptor(hTableDescriptor);

@@ -1,0 +1,2 @@
+- * A scheduler that maintains isolated handler pools for general, high-priority and replication
+- * requests.

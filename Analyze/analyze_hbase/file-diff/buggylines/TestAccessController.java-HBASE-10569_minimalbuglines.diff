@@ -1,0 +1,2 @@
+-    MasterCoprocessorHost cpHost = TEST_UTIL.getMiniHBaseCluster().getMaster().getCoprocessorHost();
+-        .getCoprocessorHost();

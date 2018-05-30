@@ -1,0 +1,5 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-          .createTableDescriptorForTableDirectory(snapshotDir,
+-              new TableDescriptor(htd), false);
+-      new FSTableDescriptors(conf).createTableDescriptorForTableDirectory(tableDir,
+-          new TableDescriptor(htd), false);

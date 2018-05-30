@@ -1,0 +1,34 @@
+-public class SnapshotManager implements Stoppable {
+-  private final MasterServices master;  // Needed by TableEventHandlers
+-  private final MetricsMaster metricsMaster;
+-  private final ProcedureCoordinator coordinator;
+-  private final Path rootDir;
+-  private final ExecutorService executorService;
+-  /**
+-   * Construct a snapshot manager.
+-   * @param master
+-   */
+-  public SnapshotManager(final MasterServices master, final MetricsMaster metricsMaster)
+-      throws KeeperException, IOException, UnsupportedOperationException {
+-    this.master = master;
+-    this.metricsMaster = metricsMaster;
+-
+-    this.rootDir = master.getMasterFileSystem().getRootDir();
+-    checkSnapshotSupport(master.getConfiguration(), master.getMasterFileSystem());
+-
+-    // get the configuration for the coordinator
+-    Configuration conf = master.getConfiguration();
+-    long wakeFrequency = conf.getInt(SNAPSHOT_WAKE_MILLIS_KEY, SNAPSHOT_WAKE_MILLIS_DEFAULT);
+-    long timeoutMillis = conf.getLong(SNAPSHOT_TIMEOUT_MILLIS_KEY, SNAPSHOT_TIMEOUT_MILLIS_DEFAULT);
+-    int opThreads = conf.getInt(SNAPSHOT_POOL_THREADS_KEY, SNAPSHOT_POOL_THREADS_DEFAULT);
+-
+-    // setup the default procedure coordinator
+-    String name = master.getServerName().toString();
+-    ThreadPoolExecutor tpool = ProcedureCoordinator.defaultPool(name, opThreads);
+-    ProcedureCoordinatorRpcs comms = new ZKProcedureCoordinatorRpcs(
+-        master.getZooKeeper(), SnapshotManager.ONLINE_SNAPSHOT_CONTROLLER_DESCRIPTION, name);
+-
+-    this.coordinator = new ProcedureCoordinator(comms, tpool, timeoutMillis, wakeFrequency);
+-    this.executorService = master.getExecutorService();
+-    resetTempDir();
+-  }

@@ -1,0 +1,5 @@
+-    assertEquals(master.getCoprocessors().length, info.getCoprocessors().length);
+-    assertTrue(info.getNumRegionServers() == 4);
+-        index) {
+-    assertTrue(info.getNumRegionServers() == 3);
+-    assertTrue(info.getNumDeadRegionServers() == 1);

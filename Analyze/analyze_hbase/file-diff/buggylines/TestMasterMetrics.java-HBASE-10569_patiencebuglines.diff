@@ -1,0 +1,11 @@
+-import org.apache.hadoop.hbase.MiniHBaseCluster.MiniHBaseClusterRegionServer;
+-  private static class MyRegionServer extends MiniHBaseClusterRegionServer {
+-    public MyRegionServer(Configuration conf) throws IOException,
+-        InterruptedException {
+-    TEST_UTIL.startMiniCluster(1, 1, 1, null, HMaster.class, MyRegionServer.class);
+-    ServerName serverName = cluster.getRegionServer(0).getServerName();
+-    MetricsMasterSource masterSource = master.getMetrics().getMetricsSource();
+-    master.regionServerReport(null, request.build());
+-    master.regionServerReport(null, request.build());
+-    master.regionServerReport(null, request.build());
+-    MetricsMasterSource masterSource = master.getMetrics().getMetricsSource();

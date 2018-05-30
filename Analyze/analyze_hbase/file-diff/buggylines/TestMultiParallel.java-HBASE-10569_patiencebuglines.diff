@@ -1,0 +1,7 @@
+-import org.apache.hadoop.hbase.protobuf.ProtobufUtil;
+-        Thread.sleep(10);
+-    for (JVMClusterUtil.RegionServerThread t: liveRSs) {
+-      int regions = ProtobufUtil.getOnlineRegions(t.getRegionServer()).size();
+-      // Assert.assertTrue("Count of regions=" + regions, regions > 10);
+-    }
+-              .getClusterStatus().getServersSize() == (liveRScount - 1);

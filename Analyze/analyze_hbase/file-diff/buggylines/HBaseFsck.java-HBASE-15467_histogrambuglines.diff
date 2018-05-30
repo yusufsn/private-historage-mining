@@ -1,0 +1,5 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-          TableDescriptor htd =
+-          modTInfo.htds.add(htd.getHTableDescriptor());
+-    fstd.createTableDescriptor(new TableDescriptor(htd), true);
+-            fstd.createTableDescriptor(new TableDescriptor(htd), true);

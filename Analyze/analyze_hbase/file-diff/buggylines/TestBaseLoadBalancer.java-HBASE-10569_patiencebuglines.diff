@@ -1,0 +1,2 @@
+-    BaseLoadBalancer.Cluster cluster = new Cluster(clusterState, null, null);
+-    BaseLoadBalancer.Cluster cluster = new Cluster(clusterState, null, locationFinder);

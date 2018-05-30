@@ -1,0 +1,82 @@
+line_no,diffmyers-RateLimiter.java,diffhistogram-RateLimiter.java,diffminimal-RateLimiter.java,diffpatience-RateLimiter.java
+100 , +  protected long gettimeunitinmillis() { , -  /** , +  protected long gettimeunitinmillis() { , +  protected long gettimeunitinmillis() {
+101 , +    return tunit; ," -   * given the time interval', 'is there at least one resource available to allow execution? ", +    return tunit; , +    return tunit;
+102 , +  } , -   * @param now the current timestamp , +  } , +  }
+103 , + , -   * @param lastts the timestamp of the last update , + , +
+104 , /** ," -   * @return true if there is at least one resource available', 'otherwise false ", /** , /**
+105 ," -   * given the time interval', 'is there at least one resource available to allow execution? ", -   */ ," -   * given the time interval', 'is there at least one resource available to allow execution? "," -   * given the time interval', 'is there at least one resource available to allow execution?"
+106 , -   * @param now the current timestamp ," -  public boolean canexecute(final long now', 'final long lastts) { ", -   * @param now the current timestamp , -   * @param now the current timestamp
+107 , -   * @param lastts the timestamp of the last update ," -    return canexecute(now', 'lastts', '1); ", -   * @param lastts the timestamp of the last update , -   * @param lastts the timestamp of the last update
+108 , +   * is there at least one resource available to allow execution? , +  protected long gettimeunitinmillis() { , +   * is there at least one resource available to allow execution? , +   * is there at least one resource available to allow execution?
+109 ," * @return true if there is at least one resource available', 'otherwise false ", +    return tunit; ," * @return true if there is at least one resource available', 'otherwise false "," * @return true if there is at least one resource available', 'otherwise false"
+110 , */ , } , */ , */
+111 ," -  public boolean canexecute(final long now', 'final long lastts) { ",  ," -  public boolean canexecute(final long now', 'final long lastts) { "," -  public boolean canexecute(final long now', 'final long lastts) {"
+112 ," -    return canexecute(now', 'lastts', '1); ", /** ," -    return canexecute(now', 'lastts', '1); "," -    return canexecute(now', 'lastts', '1);"
+113 , +  public boolean canexecute() { ," -   * given the time interval', 'are there enough available resources to allow execution? ", +  public boolean canexecute() { , +  public boolean canexecute() {
+114 , +    return canexecute(1); , -   * @param now the current timestamp , +    return canexecute(1); , +    return canexecute(1);
+115 , } , -   * @param lastts the timestamp of the last update , } , }
+116 ,  , +   * is there at least one resource available to allow execution? ,  , 
+117 , /** ," +   * @return true if there is at least one resource available', 'otherwise false ", /** , /**
+118 ," -   * given the time interval', 'are there enough available resources to allow execution? ", +   */ ," -   * given the time interval', 'are there enough available resources to allow execution? "," -   * given the time interval', 'are there enough available resources to allow execution?"
+119 , -   * @param now the current timestamp , +  public boolean canexecute() { , -   * @param now the current timestamp , -   * @param now the current timestamp
+120 , -   * @param lastts the timestamp of the last update , +    return canexecute(1); , -   * @param lastts the timestamp of the last update , -   * @param lastts the timestamp of the last update
+121 , +   * are there enough available resources to allow execution? , +  } , +   * are there enough available resources to allow execution? , +   * are there enough available resources to allow execution?
+122 , * @param amount the number of required resources , + , * @param amount the number of required resources , * @param amount the number of required resources
+123 ," * @return true if there are enough available resources', 'otherwise false ", +  /** ," * @return true if there are enough available resources', 'otherwise false "," * @return true if there are enough available resources', 'otherwise false"
+124 , */ , +   * are there enough available resources to allow execution? , */ , */
+125 ," -  public synchronized boolean canexecute(final long now', 'final long lastts', 'final long amount) { ", * @param amount the number of required resources ," -  public synchronized boolean canexecute(final long now', 'final long lastts', 'final long amount) { "," -  public synchronized boolean canexecute(final long now', 'final long lastts', 'final long amount) {"
+126 ," -    return avail >= amount ? true : refill(now', 'lastts) >= amount; "," * @return true if there are enough available resources', 'otherwise false "," -    return avail >= amount ? true : refill(now', 'lastts) >= amount; "," -    return avail >= amount ? true : refill(now', 'lastts) >= amount;"
+127 , +  public synchronized boolean canexecute(final long amount) { , */ , +  public synchronized boolean canexecute(final long amount) { , +  public synchronized boolean canexecute(final long amount) {
+128 ," +    long refillamount = refill(limit', 'avail); "," -  public synchronized boolean canexecute(final long now', 'final long lastts', 'final long amount) { "," +    long refillamount = refill(limit', 'avail); "," +    long refillamount = refill(limit', 'avail);"
+129 , +    if (refillamount == 0 && avail < amount) { ," -    return avail >= amount ? true : refill(now', 'lastts) >= amount; ", +    if (refillamount == 0 && avail < amount) { , +    if (refillamount == 0 && avail < amount) {
+130 , +      return false; , +  public synchronized boolean canexecute(final long amount) { , +      return false; , +      return false;
+131 , +    } ," +    long refillamount = refill(limit', 'avail); ", +    } , +    }
+132 , +    // check for positive overflow , +    if (refillamount == 0 && avail < amount) { , +    // check for positive overflow , +    // check for positive overflow
+133 , +    if (avail <= long.max_value - refillamount) { , +      return false; , +    if (avail <= long.max_value - refillamount) { , +    if (avail <= long.max_value - refillamount) {
+134 ," +      avail = math.max(0', 'math.min(avail + refillamount', 'limit)); ", +    } ," +      avail = math.max(0', 'math.min(avail + refillamount', 'limit)); "," +      avail = math.max(0', 'math.min(avail + refillamount', 'limit));"
+135 , +    } else { , +    // check for positive overflow , +    } else { , +    } else {
+136 ," +      avail = math.max(0', 'limit); ", +    if (avail <= long.max_value - refillamount) { ," +      avail = math.max(0', 'limit); "," +      avail = math.max(0', 'limit);"
+137 , +    } ," +      avail = math.max(0', 'math.min(avail + refillamount', 'limit)); ", +    } , +    }
+138 , +    if (avail >= amount) { , +    } else { , +    if (avail >= amount) { , +    if (avail >= amount) {
+139 , +      return true; ," +      avail = math.max(0', 'limit); ", +      return true; , +      return true;
+141 , +    return false; , +    if (avail >= amount) { , +    return false; , +    return false;
+142 , } , +      return true; , } , }
+143 ,  , +    } ,  , 
+144 , /** , +    return false; , /** , /**
+145 ," @@ -150', '6 +178', '9 @@ public class ratelimiter { ", } ," @@ -150', '6 +178', '9 @@ public class ratelimiter { "," @@ -150', '6 +178', '9 @@ public class ratelimiter {"
+146 , */ ,  , */ , */
+147 , public synchronized void consume(final long amount) { , /** , public synchronized void consume(final long amount) { , public synchronized void consume(final long amount) {
+148 , this.avail -= amount; ," @@ -150', '6 +178', '9 @@ public class ratelimiter { ", this.avail -= amount; , this.avail -= amount;
+149 , +    if (this.avail < 0) { , */ , +    if (this.avail < 0) { , +    if (this.avail < 0) {
+150 , +      this.avail = 0; , public synchronized void consume(final long amount) { , +      this.avail = 0; , +      this.avail = 0;
+151 , +    } , this.avail -= amount; , +    } , +    }
+152 , } , +    if (this.avail < 0) { , } , }
+153 ,  , +      this.avail = 0; ,  , 
+154 , /** , +    } , /** , /**
+155 ," @@ -164', '18 +195', '16 @@ public class ratelimiter { ", } ," @@ -164', '18 +195', '16 @@ public class ratelimiter { "," @@ -164', '18 +195', '16 @@ public class ratelimiter {"
+156 , */ ,  , */ , */
+157 , public synchronized long waitinterval(final long amount) { , /** , public synchronized long waitinterval(final long amount) { , public synchronized long waitinterval(final long amount) {
+158 , // todo handle over quota? ," @@ -164', '18 +195', '16 @@ public class ratelimiter { ", // todo handle over quota? , // todo handle over quota?
+159 , -    return (amount <= avail) ? 0 : ((amount * tunit) / limit) - ((avail * tunit) / limit); , */ , -    return (amount <= avail) ? 0 : ((amount * tunit) / limit) - ((avail * tunit) / limit); , -    return (amount <= avail) ? 0 : ((amount * tunit) / limit) - ((avail * tunit) / limit);
+160 ," +    return (amount <= avail) ? 0 : getwaitinterval(limit', 'avail', 'amount); ", public synchronized long waitinterval(final long amount) { ," +    return (amount <= avail) ? 0 : getwaitinterval(limit', 'avail', 'amount); "," +    return (amount <= avail) ? 0 : getwaitinterval(limit', 'avail', 'amount);"
+161 , } , // todo handle over quota? , } , }
+162 ,  , -    return (amount <= avail) ? 0 : ((amount * tunit) / limit) - ((avail * tunit) / limit); ,  , 
+163 , -  /** ," +    return (amount <= avail) ? 0 : getwaitinterval(limit', 'avail', 'amount); ", -  /** , -  /**
+164 ," -   * given the specified time interval', 'refill the avilable units to the proportionate ", } ," -   * given the specified time interval', 'refill the avilable units to the proportionate "," -   * given the specified time interval', 'refill the avilable units to the proportionate"
+165 , -   * to elapsed time or to the prespecified limit. ,  , -   * to elapsed time or to the prespecified limit. , -   * to elapsed time or to the prespecified limit.
+166 , -   */ , -  /** , -   */ , -   */
+167 ," -  private long refill(final long now', 'final long lastts) { "," -   * given the specified time interval', 'refill the avilable units to the proportionate "," -  private long refill(final long now', 'final long lastts) { "," -  private long refill(final long now', 'final long lastts) {"
+168 , -    long delta = (limit * (now - lastts)) / tunit; , -   * to elapsed time or to the prespecified limit. , -    long delta = (limit * (now - lastts)) / tunit; , -    long delta = (limit * (now - lastts)) / tunit;
+169 , -    if (delta > 0) { , -   */ , -    if (delta > 0) { , -    if (delta > 0) {
+170 ," -      avail = math.min(limit', 'avail + delta); "," -  private long refill(final long now', 'final long lastts) { "," -      avail = math.min(limit', 'avail + delta); "," -      avail = math.min(limit', 'avail + delta);"
+171 , +  // this method is for strictly testing purpose only , -    long delta = (limit * (now - lastts)) / tunit; , +  // this method is for strictly testing purpose only , -    }
+172 , +  @visiblefortesting , -    if (delta > 0) { , +  @visiblefortesting , -    return avail;
+173 , +  public void setnextrefilltime(long nextrefilltime) { ," -      avail = math.min(limit', 'avail + delta); ", +  public void setnextrefilltime(long nextrefilltime) { , +  // this method is for strictly testing purpose only
+174 , +    this.setnextrefilltime(nextrefilltime); , +  // this method is for strictly testing purpose only , +    this.setnextrefilltime(nextrefilltime); , +  @visiblefortesting
+175 , } , +  @visiblefortesting , } , +  public void setnextrefilltime(long nextrefilltime) {
+176 , -    return avail; , +  public void setnextrefilltime(long nextrefilltime) { , -    return avail; , +    this.setnextrefilltime(nextrefilltime);
+177 , + , +    this.setnextrefilltime(nextrefilltime); , + , +  }
+178 , +  public long getnextrefilltime() { , } , +  public long getnextrefilltime() { , +
+179 , +    return this.getnextrefilltime(); , -    return avail; , +    return this.getnextrefilltime(); , +  public long getnextrefilltime() {
+180 , } , + , } , +    return this.getnextrefilltime();
+181 , } , +  public long getnextrefilltime() { , } , }

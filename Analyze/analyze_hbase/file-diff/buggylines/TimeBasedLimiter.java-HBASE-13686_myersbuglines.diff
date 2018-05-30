@@ -1,0 +1,25 @@
+-import org.apache.hadoop.hbase.util.EnvironmentEdgeManager;
+-  private long writeLastTs = 0;
+-  private long readLastTs = 0;
+-
+-  private RateLimiter reqsLimiter = new RateLimiter();
+-  private RateLimiter reqSizeLimiter = new RateLimiter();
+-  private RateLimiter writeReqsLimiter = new RateLimiter();
+-  private RateLimiter writeSizeLimiter = new RateLimiter();
+-  private RateLimiter readReqsLimiter = new RateLimiter();
+-  private RateLimiter readSizeLimiter = new RateLimiter();
+-  public void checkQuota(long writeSize, long readSize)
+-      throws ThrottlingException {
+-    long now = EnvironmentEdgeManager.currentTime();
+-    long lastTs = Math.max(readLastTs, writeLastTs);
+-
+-    if (!reqsLimiter.canExecute(now, lastTs)) {
+-    if (!reqSizeLimiter.canExecute(now, lastTs, writeSize + readSize)) {
+-      if (!writeReqsLimiter.canExecute(now, writeLastTs)) {
+-      if (!writeSizeLimiter.canExecute(now, writeLastTs, writeSize)) {
+-      if (!readReqsLimiter.canExecute(now, readLastTs)) {
+-      if (!readSizeLimiter.canExecute(now, readLastTs, readSize)) {
+-    long now = EnvironmentEdgeManager.currentTime();
+-
+-      writeLastTs = now;
+-      readLastTs = now;

@@ -1,0 +1,35 @@
+- *   RateLimiter limiter = new RateLimiter(); // At this point you have a unlimited resource limiter
+- *   long lastTs = 0;             // You need to keep track of the last update timestamp
+- *     long now = System.currentTimeMillis();
+- *
+- *     bool canExecute = limiter.canExecute(now, lastTs);
+-public class RateLimiter {
+-  public RateLimiter() {
+-  }
+-      case NANOSECONDS:
+-        throw new RuntimeException("Unsupported NANOSECONDS TimeUnit");
+-      case MICROSECONDS:
+-        throw new RuntimeException("Unsupported MICROSECONDS TimeUnit");
+-      return "RateLimiter(Bypass)";
+-    return "RateLimiter(avail=" + avail + " limit=" + limit + " tunit=" + tunit + ")";
+-   * given the time interval, is there at least one resource available to allow execution?
+-   * @param now the current timestamp
+-   * @param lastTs the timestamp of the last update
+-  public boolean canExecute(final long now, final long lastTs) {
+-    return canExecute(now, lastTs, 1);
+-   * given the time interval, are there enough available resources to allow execution?
+-   * @param now the current timestamp
+-   * @param lastTs the timestamp of the last update
+-  public synchronized boolean canExecute(final long now, final long lastTs, final long amount) {
+-    return avail >= amount ? true : refill(now, lastTs) >= amount;
+-    return (amount <= avail) ? 0 : ((amount * tunit) / limit) - ((avail * tunit) / limit);
+-  /**
+-   * given the specified time interval, refill the avilable units to the proportionate
+-   * to elapsed time or to the prespecified limit.
+-   */
+-  private long refill(final long now, final long lastTs) {
+-    long delta = (limit * (now - lastTs)) / tunit;
+-    if (delta > 0) {
+-      avail = Math.min(limit, avail + delta);
+-    }
+-    return avail;

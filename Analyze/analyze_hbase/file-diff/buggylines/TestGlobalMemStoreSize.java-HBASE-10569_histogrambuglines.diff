@@ -1,0 +1,15 @@
+-      for (HRegionInfo regionInfo : ProtobufUtil.getOnlineRegions(server)) {
+-      for (HRegionInfo regionInfo : ProtobufUtil.getOnlineRegions(server)) {
+-        for (HRegionInfo regionInfo : ProtobufUtil.getOnlineRegions(server)) {
+-  /** figure out how many regions are currently being served. */
+-  private int getRegionCount() throws IOException {
+-    int total = 0;
+-    for (HRegionServer server : getOnlineRegionServers()) {
+-      total += ProtobufUtil.getOnlineRegions(server).size();
+-    }
+-    return total;
+-  }
+-  
+-    while (getRegionCount() < totalRegionNum) {
+-      LOG.debug("Waiting for there to be "+totalRegionNum+" regions, but there are " + getRegionCount() + " right now.");
+-

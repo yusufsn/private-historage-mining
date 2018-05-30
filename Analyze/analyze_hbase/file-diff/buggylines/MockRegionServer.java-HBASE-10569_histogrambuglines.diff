@@ -1,0 +1,9 @@
+-import java.net.InetSocketAddress;
+-import com.google.protobuf.Message;
+-import org.apache.hadoop.hbase.TableName;
+-import org.apache.hadoop.hbase.protobuf.generated.RPCProtos;
+-  @Override
+-  public int getPriority(RPCProtos.RequestHeader header, Message param) {
+-    return 0;
+-  }
+-

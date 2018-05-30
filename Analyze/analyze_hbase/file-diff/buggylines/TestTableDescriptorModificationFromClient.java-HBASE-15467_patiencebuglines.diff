@@ -1,0 +1,3 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-    TableDescriptor td =
+-    verifyTableDescriptor(td.getHTableDescriptor(), tableName, families);

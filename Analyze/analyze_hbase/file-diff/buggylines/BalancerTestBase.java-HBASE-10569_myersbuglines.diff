@@ -1,0 +1,1 @@
+-    return new BaseLoadBalancer.Cluster(mockClusterServers(mockCluster, -1), null, null);

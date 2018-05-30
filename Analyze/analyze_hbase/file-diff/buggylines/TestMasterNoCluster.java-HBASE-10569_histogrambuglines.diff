@@ -1,0 +1,144 @@
+-import static org.junit.Assert.assertEquals;
+-import org.apache.hadoop.hbase.TableName;
+-import org.apache.hadoop.hbase.exceptions.DeserializationException;
+-import org.apache.hadoop.hbase.ServerLoad;
+-import org.apache.hadoop.hbase.regionserver.RegionOpeningState;
+-import org.apache.hadoop.hbase.MediumTests;
+-import org.apache.hadoop.hbase.protobuf.ProtobufUtil;
+-import org.apache.hadoop.hbase.protobuf.generated.HBaseProtos.NameStringPair;
+-import org.apache.hadoop.hbase.protobuf.generated.RegionServerStatusProtos.RegionServerReportRequest;
+-import org.apache.hadoop.hbase.protobuf.generated.RegionServerStatusProtos.RegionServerStartupRequest;
+-import org.apache.hadoop.hbase.protobuf.generated.RegionServerStatusProtos.RegionServerStartupResponse;
+-import com.google.protobuf.ServiceException;
+-import org.mockito.Mockito;
+-import org.apache.commons.logging.Log;
+-import org.apache.commons.logging.LogFactory;
+-        // Fake a successful open.
+-        Mockito.doReturn(RegionOpeningState.OPENED).when(spy).
+-          sendRegionOpen((ServerName)Mockito.any(), (HRegionInfo)Mockito.any(),
+-            Mockito.anyInt(), Mockito.anyListOf(ServerName.class));
+-      CatalogTracker createCatalogTracker(ZooKeeperWatcher zk,
+-          Configuration conf, Abortable abortable)
+-      throws IOException {
+-        return new CatalogTracker(zk, conf, connection, abortable);
+-      while (!master.isRpcServerOpen()) Threads.sleep(10);
+-        master.regionServerReport(null, request.build());
+-      while (!master.isInitialized()) {Threads.sleep(10);}
+-  /**
+-   * Test starting master getting it up post initialized state using mocks.
+-   * @throws IOException
+-   * @throws KeeperException
+-   * @throws InterruptedException
+-   * @throws DeserializationException
+-   * @throws ServiceException
+-   */
+-  @Test (timeout=60000)
+-  public void testCatalogDeploys()
+-      throws Exception {
+-    final Configuration conf = TESTUTIL.getConfiguration();
+-    conf.setInt(ServerManager.WAIT_ON_REGIONSERVERS_MINTOSTART, 1);
+-    conf.setInt(ServerManager.WAIT_ON_REGIONSERVERS_MAXTOSTART, 1);
+-
+-    final long now = System.currentTimeMillis();
+-    // Name for our single mocked up regionserver.
+-    final ServerName sn = ServerName.valueOf("0.example.org", 0, now);
+-    // Here is our mocked up regionserver.  Create it now.  Need it setting up
+-    // master next.
+-    final MockRegionServer rs0 = new MockRegionServer(conf, sn);
+-
+-    // Create master.  Subclass to override a few methods so we can insert mocks
+-    // and get notification on transitions.  We need to fake out any rpcs the
+-    // master does opening/closing regions.  Also need to fake out the address
+-    // of the 'remote' mocked up regionservers.
+-    HMaster master = new HMaster(conf) {
+-      InetAddress getRemoteInetAddress(final int port, final long serverStartCode)
+-      throws UnknownHostException {
+-        // Interject an unchecked, nonsense InetAddress; i.e. no resolve.
+-        return InetAddress.getByAddress(rs0.getServerName().getHostname(),
+-          new byte [] {10, 0, 0, 0});
+-      }
+-
+-      @Override
+-      ServerManager createServerManager(Server master, MasterServices services)
+-      throws IOException {
+-        ServerManager sm = super.createServerManager(master, services);
+-        // Spy on the created servermanager
+-        ServerManager spy = Mockito.spy(sm);
+-        // Fake a successful open.
+-        Mockito.doReturn(RegionOpeningState.OPENED).when(spy).
+-          sendRegionOpen((ServerName)Mockito.any(), (HRegionInfo)Mockito.any(),
+-            Mockito.anyInt(), Mockito.anyListOf(ServerName.class));
+-        return spy;
+-      }
+-
+-      @Override
+-      CatalogTracker createCatalogTracker(ZooKeeperWatcher zk,
+-          Configuration conf, Abortable abortable)
+-      throws IOException {
+-        // Insert a mock for the connection used by the CatalogTracker.   Use
+-        // TESTUTIL.getConfiguration rather than the conf from the master; the
+-        // conf will already have an HConnection associate so the below mocking
+-        // of a connection will fail.
+-        HConnection connection =
+-          HConnectionTestingUtility.getMockedConnectionAndDecorate(TESTUTIL.getConfiguration(),
+-            rs0, rs0, rs0.getServerName(), HRegionInfo.FIRST_META_REGIONINFO);
+-        return new CatalogTracker(zk, conf, connection, abortable);
+-      }
+-
+-      @Override
+-      void initNamespace() {
+-      }
+-    };
+-    master.start();
+-    LOG.info("Master has started");
+-
+-    try {
+-      // Wait till master is up ready for RPCs.
+-      while (!master.isRpcServerOpen()) Threads.sleep(10);
+-      LOG.info("RpcServerOpen has started");
+-
+-      // Fake master that there is a regionserver out there.  Report in.
+-      RegionServerStartupRequest.Builder request = RegionServerStartupRequest.newBuilder();
+-      request.setPort(rs0.getServerName().getPort());
+-      request.setServerStartCode(rs0.getServerName().getStartcode());
+-      request.setServerCurrentTime(now);
+-      RegionServerStartupResponse result =
+-        master.regionServerStartup(null, request.build());
+-      String rshostname = new String();
+-      for (NameStringPair e : result.getMapEntriesList()) {
+-        if (e.getName().toString().equals(HConstants.KEY_FOR_HOSTNAME_SEEN_BY_MASTER)) {
+-          rshostname = e.getValue();
+-        }
+-      }
+-      // Assert hostname is as expected.
+-      assertEquals(rs0.getServerName().getHostname(), rshostname);
+-      // Now master knows there is at least one regionserver checked in and so
+-      // it'll wait a while to see if more and when none, will assign meta
+-      // to this single server.  Will do an rpc open but we've
+-      // mocked it above in our master override to return 'success'.  As part of
+-      // region open, master will have set an unassigned znode for the region up
+-      // into zk for the regionserver to transition.  Lets do that now to
+-      // complete fake of a successful open.
+-      Mocking.fakeRegionServerRegionOpenInZK(master, rs0.getZooKeeper(),
+-        rs0.getServerName(), HRegionInfo.FIRST_META_REGIONINFO);
+-      LOG.info("fakeRegionServerRegionOpenInZK has started");
+-
+-      // Need to set meta location as r0.  Usually the regionserver does this
+-      // when its figured it just opened the meta region by setting the meta
+-      // location up into zk.  Since we're mocking regionserver, need to do this
+-      // ourselves.
+-      MetaRegionTracker.setMetaLocation(rs0.getZooKeeper(), rs0.getServerName());
+-      // Master should now come up.
+-      while (!master.isInitialized()) {Threads.sleep(10);}
+-      assertTrue(master.isInitialized());
+-    } finally {
+-      rs0.stop("Test is done");
+-      master.stopMaster();
+-      master.join();
+-    }
+-  }
+-
+-      CatalogTracker createCatalogTracker(ZooKeeperWatcher zk,
+-          Configuration conf, Abortable abortable)
+-      throws IOException {
+-        return new CatalogTracker(zk, conf, connection, abortable);

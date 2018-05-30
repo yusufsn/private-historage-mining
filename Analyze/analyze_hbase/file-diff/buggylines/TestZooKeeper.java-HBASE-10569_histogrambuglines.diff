@@ -1,0 +1,17 @@
+-    TEST_UTIL.startMiniHBaseCluster(1, 2);
+-  @Test (timeout = 60000)
+-    int metaIndex = TEST_UTIL.getMiniHBaseCluster().getServerWithMeta();
+-    TEST_UTIL.expireRegionServerSession(metaIndex);
+-  // @Test Disabled because seems to make no sense expiring master session
+-  // and then trying to create table (down in testSanity); on master side
+-  // it will fail because the master's session has expired -- St.Ack 07/24/2012
+-  @Test(timeout = 60000)
+-    assertFalse(m.isStopped());
+-  @Test
+-    ZooKeeperWatcher zkw = m.getZooKeeperWatcher();
+-      m.getZooKeeperWatcher().close();
+-      assertFalse(m.isStopped());
+-      cluster.waitForActiveAndReadyMaster(10000);
+-  @Test(timeout = 240000)
+-      m.getZooKeeperWatcher().close();
+-      assertFalse(m.isStopped());

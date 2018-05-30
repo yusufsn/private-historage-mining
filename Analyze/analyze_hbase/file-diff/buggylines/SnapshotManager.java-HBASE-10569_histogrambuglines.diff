@@ -1,0 +1,6 @@
+-  private MetricsMaster metricsMaster;
+-    this.metricsMaster = metricsMaster;
+-    MasterCoprocessorHost cpHost = master.getCoprocessorHost();
+-    MasterCoprocessorHost cpHost = master.getCoprocessorHost();
+-    MasterCoprocessorHost cpHost = master.getCoprocessorHost();
+-    this.metricsMaster = metricsMaster;

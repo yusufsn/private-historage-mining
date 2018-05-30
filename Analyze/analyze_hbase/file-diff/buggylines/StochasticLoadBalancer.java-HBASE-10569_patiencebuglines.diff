@@ -1,0 +1,5 @@
+-    if (!needsBalance(new ClusterLoadState(clusterState))) {
+-    Cluster cluster = new Cluster(clusterState, loads, regionFinder);
+-      List<RegionPlan> plans = createRegionPlans(cluster);
+-    private float multiplier = 0;
+-    private Configuration conf;

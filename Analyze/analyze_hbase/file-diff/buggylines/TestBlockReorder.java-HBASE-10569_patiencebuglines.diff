@@ -1,0 +1,5 @@
+-import org.apache.hadoop.hbase.util.Threads;
+-    MiniHBaseCluster hbm = htu.startMiniHBaseCluster(1, 1);
+-    hbm.getRegionServer(0).waitForServerOnline();
+-    String host4 = hbm.getRegionServer(0).getServerName().getHostname();
+-    HRegionServer targetRs = hbm.getRegionServer(0);

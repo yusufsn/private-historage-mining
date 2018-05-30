@@ -1,0 +1,13 @@
+-import org.apache.hadoop.hbase.*;
+-import org.apache.hadoop.hbase.protobuf.RequestConverter;
+-import org.apache.hadoop.hbase.protobuf.ProtobufUtil;
+-    MasterCoprocessorHost host = master.getCoprocessorHost();
+-    MasterCoprocessorHost host = master.getCoprocessorHost();
+-    MasterCoprocessorHost host = master.getCoprocessorHost();
+-    MasterCoprocessorHost host = master.getCoprocessorHost();
+-    MasterCoprocessorHost host = master.getCoprocessorHost();
+-      master.moveRegion(null,RequestConverter.buildMoveRegionRequest(
+-      List<HRegionInfo> openRegions = ProtobufUtil.getOnlineRegions(rs);
+-          master.moveRegion(null,RequestConverter.buildMoveRegionRequest(
+-    MasterCoprocessorHost host = master.getCoprocessorHost();
+-    master.getTableDescriptors(null, req);

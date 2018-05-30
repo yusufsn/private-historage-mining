@@ -1,0 +1,14 @@
+-    protected Cluster(Map<ServerName, List<HRegionInfo>> clusterState,  Map<String, Deque<RegionLoad>> loads,
+-    int numRegions = regions.size();
+-    int max = (int) Math.ceil((float) numRegions / numServers);
+-    int serverIdx = 0;
+-    if (numServers > 1) {
+-      serverIdx = RANDOM.nextInt(numServers);
+-      for (int i = regionIdx; i < numRegions; i += numServers) {
+-        serverRegions.add(regions.get(i % numRegions));
+-    return servers.get(RANDOM.nextInt(servers.size()));
+-
+-    // Now come up with new assignments
+-    Map<ServerName, List<HRegionInfo>> assignments = new TreeMap<ServerName, List<HRegionInfo>>();
+-      if (localServers.isEmpty()) {
+-        ServerName randomServer = servers.get(RANDOM.nextInt(servers.size()));

@@ -1,0 +1,3 @@
+-        Thread rsThread = HRegionServer.startRegionServer(hrs);
+-
+-        rsThread.join();

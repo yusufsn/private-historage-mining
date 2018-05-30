@@ -1,0 +1,9 @@
+-  @SuppressWarnings("deprecation")
+-        for (ServerName key : this.onlineServers.keySet()) {
+-    while (
+-      !this.master.isStopped() &&
+-        count < maxToStart &&
+-        (lastCountChange+interval > now || timeout > slept || count < minToStart)
+-      ){
+-
+-

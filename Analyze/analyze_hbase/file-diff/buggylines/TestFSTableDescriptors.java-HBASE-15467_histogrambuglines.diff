@@ -1,0 +1,34 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-    TableDescriptor td = new TableDescriptor(htd);
+-    assertTrue(fstd.createTableDescriptor(td));
+-    assertFalse(fstd.createTableDescriptor(td));
+-      fstd.updateTableDescriptor(td);
+-    TableDescriptor td = new TableDescriptor(htd);
+-    Path p0 = fstd.updateTableDescriptor(td);
+-    Path p1 = fstd.updateTableDescriptor(td);
+-    Path p2 = fstd.updateTableDescriptor(td);
+-    td = new TableDescriptor(htd);
+-    Path p3 = fstd.updateTableDescriptor(td);
+-    TableDescriptor descriptor = fstd.getDescriptor(htd.getTableName());
+-    assertEquals(descriptor, td);
+-    TableDescriptor td = new TableDescriptor(htd);
+-    fstd.createTableDescriptor(td);
+-    TableDescriptor td2 =
+-    assertTrue(td.equals(td2));
+-    TableDescriptor td = new TableDescriptor(htd);
+-    Path descriptorFile = fstd.updateTableDescriptor(td);
+-    TableDescriptor td2 = fstd2.getDescriptor(htd.getTableName());
+-    assertEquals(td, td2);
+-    byte[] buffer = td.toByteArray();
+-    TableDescriptor td3 = TableDescriptor.parseFrom(buffer);
+-    assertEquals(td, td3);
+-      TableDescriptor htd = new TableDescriptor(
+-      htds.updateTableDescriptor(new TableDescriptor(htd));
+-      htds.updateTableDescriptor(new TableDescriptor(htd));
+-    HTableDescriptor htd = new HTableDescriptor(HTableDescriptor.META_TABLEDESC.getTableName());
+-    HTableDescriptor htd = new HTableDescriptor(HTableDescriptor.META_TABLEDESC.getTableName());
+-    TableDescriptor td = new TableDescriptor(htd);
+-    assertTrue(fstd.createTableDescriptor(td));
+-    assertFalse(fstd.createTableDescriptor(td));
+-    assertTrue(fstd.createTableDescriptor(td)); //this will re-create
+-    assertEquals(td, FSTableDescriptors.getTableDescriptorFromFs(fs, tableDir));

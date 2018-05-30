@@ -1,0 +1,12 @@
+-import org.apache.hadoop.hbase.ZNodeClearer;
+-import org.apache.hadoop.hbase.exceptions.DeserializationException;
+-   * @param startupStatus
+-  boolean blockUntilBecomingActiveMaster(MonitoredTask startupStatus) {
+-    while (true) {
+-        while (this.clusterHasActiveMaster.get() && !this.master.isStopped()) {
+-            this.clusterHasActiveMaster.wait();
+-        if (this.master.isStopped()) {
+-          return false;
+-        }
+-        // there is no active master so we can try to become active master again
+-  public boolean isActiveMaster() {

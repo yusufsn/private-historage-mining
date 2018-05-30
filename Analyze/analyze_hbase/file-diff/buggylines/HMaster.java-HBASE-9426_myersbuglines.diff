@@ -1,0 +1,3 @@
+-      if (this.snapshotManager != null) this.snapshotManager.stop("server shutting down.");
+-    // create the snapshot manager
+-    this.snapshotManager = new SnapshotManager(this, this.metricsMaster);

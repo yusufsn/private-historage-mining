@@ -1,0 +1,4 @@
+-    ClusterLoadState cs = new ClusterLoadState(clusterMap);
+-    List<RegionPlan> regionsToReturn = new ArrayList<RegionPlan>();
+-        // Don't rebalance meta regions.
+-        if (hri.isMetaRegion()) continue;

@@ -1,0 +1,282 @@
+commit_id,filename,committer,date,time,line_number,code
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,1,/**
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,2, *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,3, * Licensed to the Apache Software Foundation (ASF) under one
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,4, * or more contributor license agreements.  See the NOTICE file
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,5, * distributed with this work for additional information
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,6, * regarding copyright ownership.  The ASF licenses this file
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,7," * to you under the Apache License, Version 2.0 (the"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,8," * ""License""); you may not use this file except in compliance"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,9, * with the License.  You may obtain a copy of the License at
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,10, *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,11, *     http://www.apache.org/licenses/LICENSE-2.0
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,12, *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,13," * Unless required by applicable law or agreed to in writing, software"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,14," * distributed under the License is distributed on an ""AS IS"" BASIS,"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,15," * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,16, * See the License for the specific language governing permissions and
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,17, * limitations under the License.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,18, */
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,19,package org.apache.hadoop.hbase.master;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,20,
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,21,import java.io.IOException;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,22,import java.util.concurrent.atomic.AtomicBoolean;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,23,
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,24,import org.apache.commons.logging.Log;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,25,import org.apache.commons.logging.LogFactory;
+dace419238e,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-03-01,17:53:03,26,import org.apache.hadoop.classification.InterfaceAudience;
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,27,import org.apache.hadoop.hbase.ZNodeClearer;
+24ebbcabc39,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,eclark,2013-02-25,22:50:17,28,import org.apache.hadoop.hbase.exceptions.DeserializationException;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,29,import org.apache.hadoop.hbase.Server;
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,30,import org.apache.hadoop.hbase.ServerName;
+ca952ac00bf,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Todd Lipcon,2011-05-03,06:11:06,31,import org.apache.hadoop.hbase.monitoring.MonitoredTask;
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,32,import org.apache.hadoop.hbase.zookeeper.MasterAddressTracker;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,33,import org.apache.hadoop.hbase.zookeeper.ZKUtil;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,34,import org.apache.hadoop.hbase.zookeeper.ZooKeeperListener;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,35,import org.apache.hadoop.hbase.zookeeper.ZooKeeperWatcher;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,36,import org.apache.zookeeper.KeeperException;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,37,
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,38,/**
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,39, * Handles everything on master-side related to master election.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,40, *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,41," * <p>Listens and responds to ZooKeeper notifications on the master znode,"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,42, * both <code>nodeCreated</code> and <code>nodeDeleted</code>.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,43, *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,44," * <p>Contains blocking methods which will hold up backup masters, waiting"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,45, * for the active master to fail.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,46, *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,47, * <p>This class is instantiated in the HMaster constructor and the method
+86f20b257f9,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-10-28,06:59:47,48, * #blockUntilBecomingActiveMaster() is called to wait until becoming
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,49, * the active master of the cluster.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,50, */
+dace419238e,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-03-01,17:53:03,51,@InterfaceAudience.Private
+dfe84fb1f9a,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,larsh,2013-06-24,20:29:07,52,public class ActiveMasterManager extends ZooKeeperListener {
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,53,  private static final Log LOG = LogFactory.getLog(ActiveMasterManager.class);
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,54,
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,55,  final AtomicBoolean clusterHasActiveMaster = new AtomicBoolean(false);
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,56,  final AtomicBoolean clusterShutDown = new AtomicBoolean(false);
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,57,
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,58,  private final ServerName sn;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,59,  private final Server master;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,60,
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,61,  /**
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,62,   * @param watcher
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,63,   * @param sn ServerName
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,64,   * @param master In an instance of a Master.
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,65,   */
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,66,"  ActiveMasterManager(ZooKeeperWatcher watcher, ServerName sn, Server master) {"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,67,    super(watcher);
+529223130ab,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-27,23:12:42,68,    this.sn = sn;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,69,    this.master = master;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,70,  }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,71,
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,72,  @Override
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,73,  public void nodeCreated(String path) {
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,74,    handle(path);
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,75,  }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,76,
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,77,  @Override
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,78,  public void nodeDeleted(String path) {
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,79,
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,80,    // We need to keep track of the cluster\'s shutdown status while
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,81,"    // we wait on the current master. We consider that, if the cluster"
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,82,"    // was already in a ""shutdown"" state when we started, that this master"
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,83,    // is part of a new cluster that was started shortly after the old cluster
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,84,"    // shut down, so that state is now irrelevant. This means that the shutdown"
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,85,    // state must be set while we wait on the active master in order
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,86,    // to shutdown this master. See HBASE-8519.
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,87,    if(path.equals(watcher.clusterStateZNode) && !master.isStopped()) {
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,88,      clusterShutDown.set(true);
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,89,    }
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,90,
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,91,    handle(path);
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,92,  }
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,93,
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,94,  void handle(final String path) {
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,95,    if (path.equals(watcher.getMasterAddressZNode()) && !master.isStopped()) {
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,96,      handleMasterNodeChange();
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,97,    }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,98,  }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,99,
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,100,  /**
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,101,   * Handle a change in the master node.  Doesn\'t matter whether this was called
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,102,   * from a nodeCreated or nodeDeleted event because there are no guarantees
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,103,   * that the current state of the master node matches the event at the time of
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,104,   * our next ZK request.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,105,   *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,106,   * <p>Uses the watchAndCheckExists method which watches the master address node
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,107,   * regardless of whether it exists or not.  If it does exist (there is an
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,108,"   * active master), it returns true.  Otherwise it returns false."
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,109,   *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,110,   * <p>A watcher is set which guarantees that this method will get called again if
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,111,   * there is another change in the master node.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,112,   */
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,113,  private void handleMasterNodeChange() {
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,114,    // Watch the node and check if it exists.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,115,    try {
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,116,      synchronized(clusterHasActiveMaster) {
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,117,"        if (ZKUtil.watchAndCheckExists(watcher, watcher.getMasterAddressZNode())) {"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,118,"          // A master node exists, there is an active master"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,119,"          LOG.debug(""A master is now available"");"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,120,          clusterHasActiveMaster.set(true);
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,121,        } else {
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,122,"          // Node is no longer there, cluster does not have an active master"
+d153ec95da6,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-18,00:51:05,123,"          LOG.debug(""No master available. Notifying waiting threads"");"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,124,          clusterHasActiveMaster.set(false);
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,125,          // Notify any thread waiting to become the active master
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,126,          clusterHasActiveMaster.notifyAll();
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,127,        }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,128,      }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,129,    } catch (KeeperException ke) {
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,130,"      master.abort(""Received an unexpected KeeperException, aborting"", ke);"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,131,    }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,132,  }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,133,
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,134,  /**
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,135,   * Block until becoming the active master.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,136,   *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,137,   * Method blocks until there is not another active master and our attempt
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,138,   * to become the new active master is successful.
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,139,   *
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,140,   * This also makes sure that we are watching the master znode so will be
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,141,   * notified if another master dies.
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,142,   * @param startupStatus
+d153ec95da6,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-18,00:51:05,143,   * @return True if no issue becoming active master else false if another
+d153ec95da6,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-18,00:51:05,144,"   * master was running or if some other problem (zookeeper, stop flag has been"
+d153ec95da6,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-18,00:51:05,145,   * set on this Master)
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,146,   */
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,147,  boolean blockUntilBecomingActiveMaster(MonitoredTask startupStatus) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,148,    while (true) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,149,"      startupStatus.setStatus(""Trying to register in ZK as active master"");"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,150,"      // Try to become the active master, watch if there is another master."
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,151,      // Write out our ServerName as versioned bytes.
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,152,      try {
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,153,        String backupZNode =
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,154,"            ZKUtil.joinZNode(this.watcher.backupMasterAddressesZNode, this.sn.toString());"
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,155,"        if (MasterAddressTracker.setMasterAddress(this.watcher,"
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,156,"            this.watcher.getMasterAddressZNode(), this.sn)) {"
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,157,
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,158,"          // If we were a backup master before, delete our ZNode from the backup"
+b5cf8748198,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-09-27,05:40:09,159,          // master directory since we are the active now)
+b5cf8748198,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-09-27,05:40:09,160,"          if (ZKUtil.checkExists(this.watcher, backupZNode) != -1) {"
+b5cf8748198,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-09-27,05:40:09,161,"            LOG.info(""Deleting ZNode for "" + backupZNode + "" from backup master directory"");"
+b5cf8748198,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-09-27,05:40:09,162,"            ZKUtil.deleteNodeFailSilent(this.watcher, backupZNode);"
+b5cf8748198,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-09-27,05:40:09,163,          }
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,164,"          // Save the znode in a file, this will allow to check if we crash in the launch scripts"
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,165,          ZNodeClearer.writeMyEphemeralNodeOnDisk(this.sn.toString());
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,166,
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,167,"          // We are the master, return"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,168,"          startupStatus.setStatus(""Successfully registered as active master."");"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,169,          this.clusterHasActiveMaster.set(true);
+d668363c234,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2013-05-03,03:52:15,170,"          LOG.info(""Registered Active Master="" + this.sn);"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,171,          return true;
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,172,        }
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,173,
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,174,        // There is another active master running elsewhere or this is a restart
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,175,        // and the master ephemeral node has not expired yet.
+d153ec95da6,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-18,00:51:05,176,        this.clusterHasActiveMaster.set(true);
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,177,
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,178,        /*
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,179,        * Add a ZNode for ourselves in the backup master directory since we are
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,180,        * not the active master.
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,181,        *
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,182,"        * If we become the active master later, ActiveMasterManager will delete"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,183,"        * this node explicitly.  If we crash before then, ZooKeeper will delete"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,184,        * this node for us since it is ephemeral.
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,185,        */
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,186,"        LOG.info(""Adding ZNode for "" + backupZNode + "" in backup master directory"");"
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,187,"        MasterAddressTracker.setMasterAddress(this.watcher, backupZNode, this.sn);"
+145d25dfc2e,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-02-19,04:10:46,188,
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,189,        String msg;
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,190,        byte[] bytes =
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,191,"          ZKUtil.getDataAndWatch(this.watcher, this.watcher.getMasterAddressZNode());"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,192,        if (bytes == null) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,193,"          msg = (""A master was detected, but went down before its address "" +"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,194,"            ""could be read.  Attempting to become the next active master"");"
+145d25dfc2e,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-02-19,04:10:46,195,        } else {
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,196,          ServerName currentMaster;
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,197,          try {
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,198,            currentMaster = ServerName.parseFrom(bytes);
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,199,          } catch (DeserializationException e) {
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,200,"            LOG.warn(""Failed parse"", e);"
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,201,            // Hopefully next time around we won\'t fail the parse.  Dangerous.
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,202,            continue;
+062660e3f48,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-02,16:26:36,203,          }
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,204,"          if (ServerName.isSameHostnameAndPort(currentMaster, this.sn)) {"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,205,"            msg = (""Current master has this master\'s address, "" +"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,206,"              currentMaster + ""; master was restarted? Deleting node."");"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,207,            // Hurry along the expiration of the znode.
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,208,"            ZKUtil.deleteNode(this.watcher, this.watcher.getMasterAddressZNode());"
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,209,
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,210,"            // We may have failed to delete the znode at the previous step, but"
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,211,            //  we delete the file anyway: a second attempt to delete the znode is likely to fail again.
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,212,            ZNodeClearer.deleteMyEphemeralNodeOnDisk();
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,213,          } else {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,214,"            msg = ""Another master is the active master, "" + currentMaster +"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,215,"              ""; waiting to become the next active master"";"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,216,          }
+145d25dfc2e,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-02-19,04:10:46,217,        }
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,218,        LOG.info(msg);
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,219,        startupStatus.setStatus(msg);
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,220,      } catch (KeeperException ke) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,221,"        master.abort(""Received an unexpected KeeperException, aborting"", ke);"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,222,        return false;
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,223,      }
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,224,      synchronized (this.clusterHasActiveMaster) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,225,        while (this.clusterHasActiveMaster.get() && !this.master.isStopped()) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,226,          try {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,227,            this.clusterHasActiveMaster.wait();
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,228,          } catch (InterruptedException e) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,229,"            // We expect to be interrupted when a master dies,"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,230,            //  will fall out if so
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,231,"            LOG.debug(""Interrupted waiting for master to die"", e);"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,232,          }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,233,        }
+f729fcd4ec4,hbase-server/src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Jean-Daniel Cryans,2013-05-15,17:54:30,234,        if (clusterShutDown.get()) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,235,          this.master.stop(
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,236,"            ""Cluster went down before this master became active"");"
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,237,        }
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,238,        if (this.master.isStopped()) {
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,239,          return false;
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,240,        }
+1d24d71821f,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Zhihong Yu,2012-03-16,21:30:47,241,        // there is no active master so we can try to become active master again
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,242,      }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,243,    }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,244,  }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,245,
+1d58b8a3bfe,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-11,19:48:02,246,  /**
+1d58b8a3bfe,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-11,19:48:02,247,   * @return True if cluster has an active master.
+1d58b8a3bfe,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-11,19:48:02,248,   */
+1d58b8a3bfe,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-11,19:48:02,249,  public boolean isActiveMaster() {
+07b0a6d06c5,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-06-16,21:55:58,250,    try {
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,251,"      if (ZKUtil.checkExists(watcher, watcher.getMasterAddressZNode()) >= 0) {"
+07b0a6d06c5,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-06-16,21:55:58,252,        return true;
+07b0a6d06c5,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-06-16,21:55:58,253,      }
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,254,    }
+07b0a6d06c5,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-06-16,21:55:58,255,    catch (KeeperException ke) {
+07b0a6d06c5,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-06-16,21:55:58,256,"      LOG.info(""Received an unexpected KeeperException when checking "" +"
+07b0a6d06c5,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-06-16,21:55:58,257,"          ""isActiveMaster : ""+ ke);"
+07b0a6d06c5,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-06-16,21:55:58,258,    }
+07b0a6d06c5,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-06-16,21:55:58,259,    return false;
+1d58b8a3bfe,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-11,19:48:02,260,  }
+1d58b8a3bfe,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-11,19:48:02,261,
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,262,  public void stop() {
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,263,    try {
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,264,"      // If our address is in ZK, delete it on our way out"
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,265,      ServerName activeMaster = null;
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,266,      try {
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,267,        activeMaster = MasterAddressTracker.getMasterAddress(this.watcher);
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,268,      } catch (IOException e) {
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,269,"        LOG.warn(""Failed get of master address: "" + e.toString());"
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,270,      }
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,271,      if (activeMaster != null &&  activeMaster.equals(this.sn)) {
+4cc08fa5d61,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-04-06,19:05:42,272,"        ZKUtil.deleteNode(watcher, watcher.getMasterAddressZNode());"
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,273,"        // We may have failed to delete the znode at the previous step, but"
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,274,        //  we delete the file anyway: a second attempt to delete the znode is likely to fail again.
+4c61d4a9651,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2012-05-18,17:44:04,275,        ZNodeClearer.deleteMyEphemeralNodeOnDisk();
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,276,      }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,277,    } catch (KeeperException e) {
+467a0e726dd,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-09-18,21:56:37,278,"      LOG.error(this.watcher.prefix(""Error deleting our own master address node""), e);"
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,279,    }
+f5213095324,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2010-08-31,23:51:44,280,  }
+d6ed1130d51,src/main/java/org/apache/hadoop/hbase/master/ActiveMasterManager.java,Michael Stack,2011-04-28,19:51:25,281,}

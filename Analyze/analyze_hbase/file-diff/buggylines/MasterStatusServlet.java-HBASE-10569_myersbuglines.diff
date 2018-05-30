@@ -1,0 +1,5 @@
+-
+-import org.apache.hadoop.hbase.util.FSUtils;
+-    response.setContentType("text/html");
+-      .setCatalogJanitorEnabled(master.isCatalogJanitorEnabled(null,
+-          RequestConverter.buildIsCatalogJanitorEnabledRequest()).getValue());

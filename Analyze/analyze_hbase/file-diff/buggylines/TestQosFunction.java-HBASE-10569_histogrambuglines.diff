@@ -1,0 +1,2 @@
+-    HRegionServer hrs = Mockito.mock(HRegionServer.class);
+-    AnnotationReadingPriorityFunction qosFunction = new AnnotationReadingPriorityFunction(hrs);

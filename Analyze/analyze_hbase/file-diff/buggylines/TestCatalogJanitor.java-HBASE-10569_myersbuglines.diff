@@ -1,0 +1,2 @@
+-      this.mfs = new MasterFileSystem(server, this, false);
+-    public MasterCoprocessorHost getCoprocessorHost() {

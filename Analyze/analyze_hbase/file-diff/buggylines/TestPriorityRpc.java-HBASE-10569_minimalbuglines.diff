@@ -1,0 +1,8 @@
+-import com.google.protobuf.HBaseZeroCopyByteString;
+-    priority = regionServer.getPriority();
+-    priority = regionServer.getPriority();
+-    Mockito.when(mockRS.getRegion((RegionSpecifier)Mockito.any())).thenReturn(mockRegion);
+-    PriorityFunction qosFunc = regionServer.getPriority();
+-    Mockito.when(mockRS.getRegion((RegionSpecifier)Mockito.any())).thenReturn(mockRegion);
+-    Mockito.when(mockRS.getScanner(12345)).thenReturn(mockRegionScanner);
+-    Mockito.when(mockRS.getRegion((RegionSpecifier)Mockito.any())).thenReturn(mockRegion);

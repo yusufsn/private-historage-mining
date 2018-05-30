@@ -1,0 +1,23 @@
+-    ProtobufUtil.openRegion(hrs, hrs.getServerName(), region);
+-    ProtobufUtil.openRegion(hrs, hrs.getServerName(), region);
+-      onlineRegions.addAll(ProtobufUtil.getOnlineRegions(rst.getRegionServer()));
+-    ProtobufUtil.openRegion(hrsDead, hrsDead.getServerName(), region);
+-    ProtobufUtil.openRegion(hrsDead, hrsDead.getServerName(), region);
+-    ProtobufUtil.openRegion(hrsDead, hrsDead.getServerName(), region);
+-    ProtobufUtil.openRegion(hrsDead, hrsDead.getServerName(), region);
+-        onlineRegions.addAll(ProtobufUtil.getOnlineRegions(rs));
+-    List<HRegionInfo> tmpOnlineRegions = ProtobufUtil.getOnlineRegions(hrs);
+-    List<RegionServerThread> regionServerThreads =
+-      cluster.getRegionServerThreads();
+-    int count = -1;
+-    HRegion metaRegion = null;
+-    for (RegionServerThread regionServerThread : regionServerThreads) {
+-      HRegionServer regionServer = regionServerThread.getRegionServer();
+-      metaRegion = regionServer.getOnlineRegion(HRegionInfo.FIRST_META_REGIONINFO.getRegionName());
+-      count++;
+-      regionServer.abort("");
+-      if (null != metaRegion) break;
+-    }
+-    HRegionServer regionServer = cluster.getRegionServer(count);
+-    assertEquals(3, rsCount);
+-    assertEquals(3, rss);

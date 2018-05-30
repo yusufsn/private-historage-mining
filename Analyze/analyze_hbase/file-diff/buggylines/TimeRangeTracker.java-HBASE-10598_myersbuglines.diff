@@ -1,0 +1,4 @@
+-  private void includeTimestamp(final long timestamp) {
+-  public boolean includesTimeRange(final TimeRange tr) {
+-  public long getMinimumTimestamp() {
+-  public long getMaximumTimestamp() {

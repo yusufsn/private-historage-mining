@@ -1,0 +1,28 @@
+line_no,diffmyers-ActiveMasterManager.java,diffhistogram-ActiveMasterManager.java,diffminimal-ActiveMasterManager.java,diffpatience-ActiveMasterManager.java
+62 , -          return false; , +      } , -          return false; , +      }
+63 , -        } , +    } , -        } , +    }
+64 , -        // there is no active master so we can try to become active master again , return false; , -        // there is no active master so we can try to become active master again , return false;
+66 , } , -        // there is no active master so we can try to become active master again , } , -        // there is no active master so we can try to become active master again
+67 , +    return false; , -      } , +    return false; , -      }
+68 , } , -    } , } , -    }
+69 ,  , -  } ,  , -  }
+70 , /** ,  , /** , 
+71 , * @return true if cluster has an active master. , /** , * @return true if cluster has an active master. , /**
+72 , */ , * @return true if cluster has an active master. , */ , * @return true if cluster has an active master.
+73 , -  public boolean isactivemaster() { , */ , -  public boolean isactivemaster() { , */
+74 , +  boolean hasactivemaster() { , -  public boolean isactivemaster() { , +  boolean hasactivemaster() { , -  public boolean isactivemaster() {
+75 , try { , +  boolean hasactivemaster() { , try { , +  boolean hasactivemaster() {
+76 ," if (zkutil.checkexists(watcher', 'watcher.getmasteraddressznode()) >= 0) { ", try { ," if (zkutil.checkexists(watcher', 'watcher.getmasteraddressznode()) >= 0) { ", try {
+77 , return true; ," if (zkutil.checkexists(watcher', 'watcher.getmasteraddressznode()) >= 0) { ", return true; ," if (zkutil.checkexists(watcher', 'watcher.getmasteraddressznode()) >= 0) {"
+78 ," @@ -261', '6 +261', '11 @@ public class activemastermanager extends zookeeperlistener { ", return true; ," @@ -261', '6 +261', '11 @@ public class activemastermanager extends zookeeperlistener { ", return true;
+79 ,  ," @@ -261', '6 +261', '11 @@ public class activemastermanager extends zookeeperlistener { ",  ," @@ -261', '6 +261', '11 @@ public class activemastermanager extends zookeeperlistener {"
+80 , public void stop() { ,  , public void stop() { , 
+81 , try { , public void stop() { , try { , public void stop() {
+82 , +      synchronized (clusterhasactivemaster) { , try { , +      synchronized (clusterhasactivemaster) { , try {
+83 ," +        // master is already stopped', 'wake up the manager ", +      synchronized (clusterhasactivemaster) { ," +        // master is already stopped', 'wake up the manager ", +      synchronized (clusterhasactivemaster) {
+84 , +        // thread so that it can shutdown soon. ," +        // master is already stopped', 'wake up the manager ", +        // thread so that it can shutdown soon. ," +        // master is already stopped', 'wake up the manager"
+85 , +        clusterhasactivemaster.notifyall(); , +        // thread so that it can shutdown soon. , +        clusterhasactivemaster.notifyall(); , +        // thread so that it can shutdown soon.
+86 , +      } , +        clusterhasactivemaster.notifyall(); , +      } , +        clusterhasactivemaster.notifyall();
+87 ," // if our address is in zk', 'delete it on our way out ", +      } ," // if our address is in zk', 'delete it on our way out ", +      }
+88 , servername activemaster = null; ," // if our address is in zk', 'delete it on our way out ", servername activemaster = null; ," // if our address is in zk', 'delete it on our way out"
+89 , try { , servername activemaster = null; , try { , servername activemaster = null;

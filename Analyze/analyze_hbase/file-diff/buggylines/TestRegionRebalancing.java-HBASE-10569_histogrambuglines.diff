@@ -1,0 +1,5 @@
+-    int total = 0;
+-      total += ProtobufUtil.getOnlineRegions(server).size();
+-        int serverLoad = ProtobufUtil.getOnlineRegions(server).size();
+-          for (HRegionInfo hri : ProtobufUtil.getOnlineRegions(server)) {
+-    int totalRegions = HBaseTestingUtility.KEYS.length+1;

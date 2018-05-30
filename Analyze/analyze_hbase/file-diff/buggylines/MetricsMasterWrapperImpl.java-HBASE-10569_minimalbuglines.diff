@@ -1,0 +1,2 @@
+-    ZooKeeperWatcher zk = master.getZooKeeperWatcher();
+-    return master.getCoprocessors();

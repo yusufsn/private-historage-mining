@@ -1,0 +1,10 @@
+-import org.apache.hadoop.fs.FileStatus;
+-  private static Path snapshots;
+-    snapshots = SnapshotDescriptionUtils.getSnapshotsDir(rootDir);
+-    IsSnapshotDoneResponse response = master.isSnapshotDone(null, builder.build());
+-    response = master.isSnapshotDone(null, builder.build());
+-    GetCompletedSnapshotsResponse response = master.getCompletedSnapshots(null, request);
+-    response = master.getCompletedSnapshots(null, request);
+-    response = master.getCompletedSnapshots(null, request);
+-      master.deleteSnapshot(null, request);
+-    master.deleteSnapshot(null, request);

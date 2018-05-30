@@ -1,0 +1,15 @@
+-    AdminProtos.OpenRegionRequest orr = RequestConverter.buildOpenRegionRequest(getRS().getServerName(), hri, 0, null);
+-    AdminProtos.OpenRegionResponse responseOpen = getRS().openRegion(null, orr);
+-    AdminProtos.CloseRegionResponse responseClose = getRS().closeRegion(null, crr);
+-    AdminProtos.CloseRegionResponse responseClose = getRS().closeRegion(null, crr);
+-    AdminProtos.CloseRegionResponse responseClose = getRS().closeRegion(null, crr);
+-      AdminProtos.OpenRegionResponse responseOpen = getRS().openRegion(null, orr);
+-      AdminProtos.OpenRegionRequest orr = RequestConverter.buildOpenRegionRequest(getRS().getServerName(), hri, 0, null);
+-      getRS().openRegion(null, orr);
+-        AdminProtos.CloseRegionResponse responseClose = getRS().closeRegion(null, crr);
+-      getRS().closeRegion(null, crr);
+-        getRS().getZooKeeperWatcher(), hri.getEncodedName(),
+-      getRS().closeRegion(null, crr);
+-        getRS().getZooKeeperWatcher(), hri.getEncodedName(),
+-      getRS().closeRegion(null, request);
+-      getRS().openRegion(null, orr);

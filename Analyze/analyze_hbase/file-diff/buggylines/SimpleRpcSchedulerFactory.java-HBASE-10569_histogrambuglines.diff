@@ -1,0 +1,3 @@
+-/** Constructs a {@link SimpleRpcScheduler}. for the region server. */
+-  public RpcScheduler create(Configuration conf, RegionServerServices server) {
+-        server,

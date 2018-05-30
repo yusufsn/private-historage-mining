@@ -1,0 +1,4 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-        TableDescriptor tblDesc = getTableDescriptors().getDescriptor(table);
+-            tblDesc.getHTableDescriptor() != null &&
+-            !tblDesc.getHTableDescriptor().isNormalizationEnabled())) {

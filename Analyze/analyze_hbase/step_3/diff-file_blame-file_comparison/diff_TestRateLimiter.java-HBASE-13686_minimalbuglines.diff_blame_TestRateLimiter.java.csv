@@ -1,0 +1,26 @@
+line_number,buggy_code,does_bugline_from_originfile?,date_added_in_originfile
+23,import org.apache.hadoop.hbase.testclassification.SmallTests;,True,2014-09-18
+25,,True,2014-09-18
+26,import org.junit.Assert;,True,2014-09-18
+30,import static org.junit.Assert.assertEquals;,True,2014-09-18
+31,import static org.junit.Assert.assertFalse;,True,2014-09-18
+32,import static org.junit.Assert.assertTrue;,True,2014-09-18
+33,,True,2014-09-18
+61,    RateLimiter limiter = new RateLimiter();,True,2014-09-18
+65,    long lastTs = 0;,True,2014-09-18
+66,,True,2014-09-18
+70,"      assertTrue(limiter.canExecute(nowTs, lastTs));",True,2014-09-18
+79,"      assertTrue(limiter.canExecute(nowTs, lastTs));",True,2014-09-18
+82,      lastTs = nowTs;,True,2014-09-18
+83,,True,2014-09-18
+89,      nowTs += waitInterval;,True,2014-09-18
+92,"      assertFalse(limiter.canExecute(nowTs - 500, lastTs));",True,2014-09-18
+97,  public void testOverconsumption() {,True,2014-09-18
+98,    RateLimiter limiter = new RateLimiter();,True,2014-09-18
+103,"    assertTrue(limiter.canExecute(0, 0));",True,2014-09-18
+105,"    assertEquals(1100, limiter.waitInterval());",True,2014-09-18
+107,    // Verify that after 1sec we need to wait for another 0.1sec to get a resource available,True,2014-09-18
+108,"    assertFalse(limiter.canExecute(1000, 0));",True,2014-09-18
+109,"    assertEquals(100, limiter.waitInterval());",True,2014-09-18
+111,    // Verify that after 1.1sec the resource is available,True,2014-09-18
+112,"    assertTrue(limiter.canExecute(1100, 0));",True,2014-09-18

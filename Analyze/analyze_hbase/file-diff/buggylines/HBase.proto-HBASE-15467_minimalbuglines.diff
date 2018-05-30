@@ -1,0 +1,5 @@
+-/** On HDFS representation of table state. */
+-message TableDescriptor {
+-  required TableSchema schema = 1;
+-}
+-

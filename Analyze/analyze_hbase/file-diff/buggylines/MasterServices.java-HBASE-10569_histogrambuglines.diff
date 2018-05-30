@@ -1,0 +1,2 @@
+-import org.apache.hadoop.hbase.TableName;
+-  MasterCoprocessorHost getCoprocessorHost();

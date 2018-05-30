@@ -1,0 +1,13 @@
+-  /** Handle all the snapshot requests to this server */
+-  RegionServerSnapshotManager snapshotManager;
+-    // watch for snapshots
+-      this.snapshotManager = new RegionServerSnapshotManager(this);
+-      this.abort("Failed to reach zk cluster when creating snapshot handler.");
+-        // start the snapshot handler, since the server is ready to run
+-        this.snapshotManager.start();
+-    // Stop the snapshot handler, forcefully killing all running tasks
+-    try {
+-      if (snapshotManager != null) snapshotManager.stop(this.abortRequested || this.killed);
+-    } catch (IOException e) {
+-      LOG.warn("Failed to close snapshot handler cleanly", e);
+-    }

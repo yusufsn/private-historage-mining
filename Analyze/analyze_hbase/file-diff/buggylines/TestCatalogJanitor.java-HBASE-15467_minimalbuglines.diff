@@ -1,0 +1,26 @@
+-import java.util.List;
+-import org.apache.hadoop.hbase.ProcedureInfo;
+-import org.apache.hadoop.hbase.TableDescriptor;
+-import org.apache.hadoop.hbase.executor.ExecutorService;
+-import org.apache.hadoop.hbase.master.normalizer.RegionNormalizer;
+-import org.apache.hadoop.hbase.master.procedure.MasterProcedureEnv;
+-import org.apache.hadoop.hbase.procedure2.ProcedureExecutor;
+-import org.apache.hadoop.hbase.quotas.MasterQuotaManager;
+-import org.apache.hadoop.hbase.security.User;
+-import com.google.protobuf.Service;
+-        @Override public Map<String, TableDescriptor> getAllDescriptors() throws IOException {
+-        @Override
+-        public TableDescriptor getDescriptor(TableName tablename)
+-            throws IOException {
+-          return createTableDescriptor();
+-        }
+-
+-        @Override
+-        public void add(TableDescriptor htd) throws IOException {
+-          // noop
+-        }
+-
+-  private TableDescriptor createTableDescriptor() {
+-    return new TableDescriptor(createHTableDescriptor());
+-  }
+-

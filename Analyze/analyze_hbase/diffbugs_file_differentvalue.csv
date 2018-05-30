@@ -1,0 +1,6 @@
+,bug_ref,commitID_1,commitID_2,filename,#line_changed-hist,#line_changed-myers,#line_changed-min,#line_changed-pat
+122,HBASE-10569,0e5d21e96ae24e8c658a1b74843b72bddcb7435,7716a3ca94,.../hadoop/hbase/master/ActiveMasterManager.java,31,29,29,31
+154,HBASE-13686,587b0b4f20bdc0415b6541023e611b69c87dba15,9f43a3bea6,.../apache/hadoop/hbase/quotas/RateLimiter.java,103,97,97,99
+157,HBASE-13686,587b0b4f20bdc0415b6541023e611b69c87dba15,9f43a3bea6,.../hadoop/hbase/quotas/TestRateLimiter.java,114,108,108,108
+172,HBASE-10569,0e5d21e96ae24e8c658a1b74843b72bddcb7435,7716a3ca94,.../org/apache/hadoop/hbase/master/HMaster.java,1993,1977,1969,1985
+173,HBASE-10569,0e5d21e96ae24e8c658a1b74843b72bddcb7435,7716a3ca94,.../hadoop/hbase/regionserver/HRegionServer.java,2285,2425,2285,2285

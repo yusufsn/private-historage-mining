@@ -1,0 +1,9 @@
+-    RegionServerWithScanTimeout.seqNoToSleepOn = 1;
+-    RegionServerWithScanTimeout.seqNoToSleepOn = -1;// No need of sleep
+-    RegionServerWithScanTimeout.sleepAlways = true;
+-    RegionServerWithScanTimeout.tryNumber = 0;
+-        + ", actual =" + RegionServerWithScanTimeout.tryNumber,
+-        RegionServerWithScanTimeout.tryNumber <= CLIENT_RETRIES_NUMBER);
+-    public RegionServerWithScanTimeout(Configuration conf)
+-    throws IOException, InterruptedException {
+-      super(conf);

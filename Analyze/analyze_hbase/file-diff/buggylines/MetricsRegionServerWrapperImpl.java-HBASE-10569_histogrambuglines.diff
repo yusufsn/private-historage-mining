@@ -1,0 +1,3 @@
+-    ZooKeeperWatcher zk = regionServer.getZooKeeperWatcher();
+-    String[] coprocessors = regionServer.getCoprocessors();
+-    return regionServer.requestCount.get();

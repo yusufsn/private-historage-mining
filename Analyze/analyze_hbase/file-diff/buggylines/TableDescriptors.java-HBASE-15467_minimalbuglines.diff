@@ -1,0 +1,18 @@
+-  /**
+-   * @param tableName
+-   * @return HTableDescriptor for tablename
+-   * @throws IOException
+-   */
+-  HTableDescriptor get(final TableName tableName)
+-  throws IOException;
+-
+-  TableDescriptor getDescriptor(final TableName tableName)
+-  Map<String, TableDescriptor> getAllDescriptors()
+-  /**
+-   * Add or update descriptor
+-   * @param htd Descriptor to set into TableDescriptors
+-   * @throws IOException
+-   */
+-  void add(final TableDescriptor htd)
+-      throws IOException;
+-

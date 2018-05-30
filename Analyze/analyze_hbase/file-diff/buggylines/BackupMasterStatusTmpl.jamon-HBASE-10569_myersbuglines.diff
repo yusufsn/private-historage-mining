@@ -1,0 +1,9 @@
+-        <a href="//<% serverNames[0].getHostname() %>:
+-	   <% master.getConfiguration().getInt("hbase.master.info.port", 16010) %>/master-status"
+-	     target="_blank">
+-	   <% serverNames[0].getHostname() %>
+-	</a>
+-        <td><a href="//<% serverName.getHostname() %>:
+-	  <% master.getConfiguration().getInt("hbase.master.info.port", 16010) %>/master-status"
+-	     target="_blank">
+-	  <% serverName.getHostname() %></a>

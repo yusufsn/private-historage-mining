@@ -1,0 +1,33 @@
+-import static org.apache.hadoop.fs.CommonConfigurationKeys.HADOOP_SECURITY_AUTHORIZATION;
+-// Uses Writables doing sasl
+-  private final Object serverInstance;
+-   * @param serverInstance hosting instance of {@link Server}. We will do authentications if an
+-  public RpcServer(final Server serverInstance, final String name,
+-    this.serverInstance = serverInstance;
+-  /** Starts the service.  Must be called before any calls will be handled. */
+-  @Override
+-  public void start() {
+-    startThreads();
+-    openServer();
+-  }
+-
+-  /**
+-   * Open a previously started server.
+-   */
+-  @Override
+-  public void openServer() {
+-    this.started = true;
+-  }
+-
+-  /**
+-   * Starts the service threads but does not allow requests to be responded yet.
+-   * Client will get {@link ServerNotRunningYetException} instead.
+-   */
+-  public synchronized void startThreads() {
+-    if (serverInstance == null) return null;
+-    if (!(serverInstance instanceof org.apache.hadoop.hbase.Server)) return null;
+-    org.apache.hadoop.hbase.Server server = (org.apache.hadoop.hbase.Server)serverInstance;
+-    responseInfo.put("class", serverInstance == null? "": serverInstance.getClass().getSimpleName());
+-    if (params.length == 2 && serverInstance instanceof HRegionServer &&
+-    } else if (params.length == 1 && serverInstance instanceof HRegionServer &&
+-  @SuppressWarnings("static-access")

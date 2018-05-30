@@ -1,0 +1,182 @@
+commit_id,committer,date,time,line_number,code
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,1,/**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,2, * Licensed to the Apache Software Foundation (ASF) under one
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,3, * or more contributor license agreements.  See the NOTICE file
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,4, * distributed with this work for additional information
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,5, * regarding copyright ownership.  The ASF licenses this file
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,6," * to you under the Apache License, Version 2.0 (the"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,7," * ""License""); you may not use this file except in compliance"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,8, * with the License.  You may obtain a copy of the License at
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,9, *
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,10, *     http://www.apache.org/licenses/LICENSE-2.0
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,11, *
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,12," * Unless required by applicable law or agreed to in writing, software"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,13," * distributed under the License is distributed on an ""AS IS"" BASIS,"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,14," * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied."
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,15, * See the License for the specific language governing permissions and
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,16, * limitations under the License.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,17, */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,18,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,19,package org.apache.hadoop.hbase.quotas;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,20,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,21,import java.util.concurrent.TimeUnit;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,22,
+0a28af366b7,Elliott Clark,2014-09-23,21:47:18,23,import org.apache.hadoop.hbase.classification.InterfaceAudience;
+a5bd931682c,Elliott Clark,2014-09-22,18:46:35,24,import org.apache.hadoop.hbase.classification.InterfaceStability;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,25,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,26,/**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,27, * Simple rate limiter.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,28, *
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,29, * Usage Example:
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,30, *   RateLimiter limiter = new RateLimiter(); // At this point you have a unlimited resource limiter
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,31," *   limiter.set(10, TimeUnit.SECONDS);       // set 10 resources/sec"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,32, *
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,33, *   long lastTs = 0;             // You need to keep track of the last update timestamp
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,34, *   while (true) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,35, *     long now = System.currentTimeMillis();
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,36, *
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,37, *     // call canExecute before performing resource consuming operation
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,38," *     bool canExecute = limiter.canExecute(now, lastTs);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,39," *     // If there are no available resources, wait until one is available"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,40, *     if (!canExecute) Thread.sleep(limiter.waitInterval());
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,41, *     // ...execute the work and consume the resource...
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,42, *     limiter.consume();
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,43, *   }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,44, */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,45,@InterfaceAudience.Private
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,46,@InterfaceStability.Evolving
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,47,public class RateLimiter {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,48,  private long tunit = 1000;           // Timeunit factor for translating to ms.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,49,  private long limit = Long.MAX_VALUE; // The max value available resource units can be refilled to.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,50,  private long avail = Long.MAX_VALUE; // Currently available resource units
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,51,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,52,  public RateLimiter() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,53,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,54,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,55,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,56,   * Set the RateLimiter max available resources and refill period.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,57,   * @param limit The max value available resource units can be refilled to.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,58,   * @param timeUnit Timeunit factor for translating to ms.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,59,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,60,"  public void set(final long limit, final TimeUnit timeUnit) {"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,61,    switch (timeUnit) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,62,      case NANOSECONDS:
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,63,"        throw new RuntimeException(""Unsupported NANOSECONDS TimeUnit"");"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,64,      case MICROSECONDS:
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,65,"        throw new RuntimeException(""Unsupported MICROSECONDS TimeUnit"");"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,66,      case MILLISECONDS:
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,67,        tunit = 1;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,68,        break;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,69,      case SECONDS:
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,70,        tunit = 1000;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,71,        break;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,72,      case MINUTES:
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,73,        tunit = 60 * 1000;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,74,        break;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,75,      case HOURS:
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,76,        tunit = 60 * 60 * 1000;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,77,        break;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,78,      case DAYS:
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,79,        tunit = 24 * 60 * 60 * 1000;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,80,        break;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,81,    }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,82,    this.limit = limit;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,83,    this.avail = limit;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,84,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,85,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,86,  public String toString() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,87,    if (limit == Long.MAX_VALUE) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,88,"      return ""RateLimiter(Bypass)"";"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,89,    }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,90,"    return ""RateLimiter(avail="" + avail + "" limit="" + limit + "" tunit="" + tunit + "")"";"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,91,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,92,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,93,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,94,   * Sets the current instance of RateLimiter to a new values.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,95,   *
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,96,"   * if current limit is smaller than the new limit, bump up the available resources."
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,97,   * Otherwise allow clients to use up the previously available resources.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,98,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,99,  public synchronized void update(final RateLimiter other) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,100,    this.tunit = other.tunit;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,101,    if (this.limit < other.limit) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,102,      this.avail += (other.limit - this.limit);
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,103,    }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,104,    this.limit = other.limit;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,105,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,106,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,107,  public synchronized boolean isBypass() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,108,    return limit == Long.MAX_VALUE;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,109,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,110,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,111,  public synchronized long getLimit() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,112,    return limit;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,113,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,114,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,115,  public synchronized long getAvailable() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,116,    return avail;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,117,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,118,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,119,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,120,"   * given the time interval, is there at least one resource available to allow execution?"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,121,   * @param now the current timestamp
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,122,   * @param lastTs the timestamp of the last update
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,123,"   * @return true if there is at least one resource available, otherwise false"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,124,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,125,"  public boolean canExecute(final long now, final long lastTs) {"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,126,"    return canExecute(now, lastTs, 1);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,127,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,128,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,129,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,130,"   * given the time interval, are there enough available resources to allow execution?"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,131,   * @param now the current timestamp
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,132,   * @param lastTs the timestamp of the last update
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,133,   * @param amount the number of required resources
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,134,"   * @return true if there are enough available resources, otherwise false"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,135,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,136,"  public synchronized boolean canExecute(final long now, final long lastTs, final long amount) {"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,137,"    return avail >= amount ? true : refill(now, lastTs) >= amount;"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,138,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,139,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,140,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,141,   * consume one available unit.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,142,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,143,  public void consume() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,144,    consume(1);
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,145,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,146,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,147,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,148,   * consume amount available units.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,149,   * @param amount the number of units to consume
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,150,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,151,  public synchronized void consume(final long amount) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,152,    this.avail -= amount;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,153,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,154,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,155,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,156,   * @return estimate of the ms required to wait before being able to provide 1 resource.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,157,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,158,  public long waitInterval() {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,159,    return waitInterval(1);
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,160,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,161,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,162,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,163,"   * @return estimate of the ms required to wait before being able to provide ""amount"" resources."
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,164,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,165,  public synchronized long waitInterval(final long amount) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,166,    // TODO Handle over quota?
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,167,    return (amount <= avail) ? 0 : ((amount * tunit) / limit) - ((avail * tunit) / limit);
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,168,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,169,
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,170,  /**
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,171,"   * given the specified time interval, refill the avilable units to the proportionate"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,172,   * to elapsed time or to the prespecified limit.
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,173,   */
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,174,"  private long refill(final long now, final long lastTs) {"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,175,    long delta = (limit * (now - lastTs)) / tunit;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,176,    if (delta > 0) {
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,177,"      avail = Math.min(limit, avail + delta);"
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,178,    }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,179,    return avail;
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,180,  }
+bd8df9ccd4d,Matteo Bertozzi,2014-09-18,01:51:15,181,}

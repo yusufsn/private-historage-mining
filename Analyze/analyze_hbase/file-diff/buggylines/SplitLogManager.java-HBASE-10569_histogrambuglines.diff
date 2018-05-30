@@ -1,0 +1,27 @@
+-import org.apache.hadoop.hbase.HConstants;
+-   *   Stoppable stopper, MasterServices master, ServerName serverName,
+-   *   boolean masterRecovery, TaskFinisher tf)}
+-   * with masterRecovery = false, and tf = null.  Used in unit tests.
+-   *
+-   * @param zkw the ZK watcher
+-   * @param conf the HBase configuration
+-   * @param stopper the stoppable in case anything is wrong
+-   * @param master the master services
+-   * @param serverName the master server name
+-   */
+-  public SplitLogManager(ZooKeeperWatcher zkw, final Configuration conf,
+-      Stoppable stopper, MasterServices master, ServerName serverName) {
+-    this(zkw, conf, stopper, master, serverName, false, null);
+-  }
+-
+-  /**
+-   * Wrapper around {@link #SplitLogManager(ZooKeeperWatcher zkw, Configuration conf,
+-   *   Stoppable stopper, MasterServices master, ServerName serverName,
+-   *   boolean masterRecovery, TaskFinisher tf)}
+-   * @param masterRecovery an indication if the master is in recovery
+-      Stoppable stopper, MasterServices master, ServerName serverName, boolean masterRecovery) {
+-    this(zkw, conf, stopper, master, serverName, masterRecovery, new TaskFinisher() {
+-   * @param masterRecovery an indication if the master is in recovery
+-        ServerName serverName, boolean masterRecovery, TaskFinisher tf) {
+-    if (!masterRecovery) {
+-    }

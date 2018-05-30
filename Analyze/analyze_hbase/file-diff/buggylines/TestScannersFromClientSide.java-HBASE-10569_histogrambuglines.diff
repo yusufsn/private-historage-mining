@@ -1,0 +1,2 @@
+-    ProtobufUtil.closeRegion(rs, rs.getServerName(), regionName, false);
+-      ProtobufUtil.openRegion(rs, rs.getServerName(), hri);

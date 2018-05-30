@@ -1,0 +1,19 @@
+-import org.apache.hadoop.hbase.NotServingRegionException;
+-import org.apache.hadoop.hbase.regionserver.HRegionServer.QosPriority;
+-  private HRegionServer hRegionServer;
+-  AnnotationReadingPriorityFunction(final HRegionServer hrs) {
+-    this.hRegionServer = hrs;
+-    for (Method m : HRegionServer.class.getMethods()) {
+-  public boolean isMetaRegion(byte[] regionName) {
+-    HRegion region;
+-    try {
+-      region = hRegionServer.getRegion(regionName);
+-    } catch (NotServingRegionException ignored) {
+-      return false;
+-    }
+-    return region.getRegionInfo().isMetaTable();
+-  }
+-
+-        HRegion region = hRegionServer.getRegion(regionSpecifier);
+-      RegionScanner scanner = hRegionServer.getScanner(request.getScannerId());
+-    this.hRegionServer = hrs;

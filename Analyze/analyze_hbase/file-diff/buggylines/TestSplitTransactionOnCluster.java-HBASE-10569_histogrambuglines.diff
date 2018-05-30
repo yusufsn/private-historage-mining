@@ -1,0 +1,12 @@
+-import org.apache.hadoop.hbase.master.RegionStates;
+-import org.apache.hadoop.hbase.regionserver.compactions.CompactionRequest;
+-      int regionCount = ProtobufUtil.getOnlineRegions(server).size();
+-      int regionCount = ProtobufUtil.getOnlineRegions(server).size();
+-        assertEquals(regionCount, ProtobufUtil.getOnlineRegions(server).size());
+-      int regionCount = ProtobufUtil.getOnlineRegions(server).size();
+-      regionCount = ProtobufUtil.getOnlineRegions(server).size();
+-    for (int i = 0; ProtobufUtil.getOnlineRegions(server).size() <= regionCount && i < 300; i++) {
+-        ProtobufUtil.getOnlineRegions(server).size() <= regionCount);
+-    assertTrue(metaServerIndex != -1);
+-    HRegionServer metaRegionServer = cluster.getRegionServer(metaServerIndex);
+-    List<HRegionInfo> regions = ProtobufUtil.getOnlineRegions(hrs);

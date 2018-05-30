@@ -1,0 +1,4 @@
+-  /** Returns current region servers */
+-    Collection<ServerName> regionServers = cluster.getClusterStatus().getServers();
+-    if (regionServers == null || regionServers.size() <= 0) return new ServerName [] {};
+-    return regionServers.toArray(new ServerName[regionServers.size()]);

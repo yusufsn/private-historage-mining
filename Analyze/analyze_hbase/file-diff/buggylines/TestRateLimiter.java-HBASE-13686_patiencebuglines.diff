@@ -1,0 +1,25 @@
+-import org.apache.hadoop.hbase.testclassification.SmallTests;
+-
+-import org.junit.Assert;
+-import static org.junit.Assert.assertEquals;
+-import static org.junit.Assert.assertFalse;
+-import static org.junit.Assert.assertTrue;
+-
+-    RateLimiter limiter = new RateLimiter();
+-    long lastTs = 0;
+-
+-      assertTrue(limiter.canExecute(nowTs, lastTs));
+-      assertTrue(limiter.canExecute(nowTs, lastTs));
+-      lastTs = nowTs;
+-
+-      nowTs += waitInterval;
+-      assertFalse(limiter.canExecute(nowTs - 500, lastTs));
+-  public void testOverconsumption() {
+-    RateLimiter limiter = new RateLimiter();
+-    assertTrue(limiter.canExecute(0, 0));
+-    assertEquals(1100, limiter.waitInterval());
+-    // Verify that after 1sec we need to wait for another 0.1sec to get a resource available
+-    assertFalse(limiter.canExecute(1000, 0));
+-    assertEquals(100, limiter.waitInterval());
+-    // Verify that after 1.1sec the resource is available
+-    assertTrue(limiter.canExecute(1100, 0));

@@ -1,0 +1,5 @@
+-import org.apache.hadoop.hbase.TableDescriptor;
+-        this.htd = FSTableDescriptors.getTableDescriptorFromFs(fs, workingDir)
+-            .getHTableDescriptor();
+-        .createTableDescriptorForTableDirectory(workingDir, new TableDescriptor(
+-            htd), false);

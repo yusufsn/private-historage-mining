@@ -1,0 +1,2 @@
+-    String zkQuorum = master.getZooKeeperWatcher().getQuorum();
+-	                    <td><% java.util.Arrays.toString(master.getCoprocessors()) %></td>
